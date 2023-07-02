@@ -8,6 +8,7 @@ abstract class HabitLocalDataSource {
   Future<Nothing> createHabit(HabitEntity habitEntity);
   Future<List<HabitEntity>> getAllHabits(MyHabitsSearchFilterEntity filter);
   Future<Nothing> editHabit(HabitEntity habitEntity);
+  Future<Nothing> deleteHabit(String id);
 }
 
 class HabitLocalDataSourceImpl implements HabitLocalDataSource {
@@ -53,6 +54,16 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
     final index = list.indexWhere((element) => element.id == habitEntity.id);
     if (index != -1) {
       habitBox.putAt(index, habitEntity);
+    }
+    return Nothing();
+  }
+
+  @override
+  Future<Nothing> deleteHabit(String id) async {
+    final list = habitBox.values.toList();
+    final index = list.indexWhere((element) => element.id == id);
+    if (index != -1) {
+      habitBox.deleteAt(index);
     }
     return Nothing();
   }

@@ -10,4 +10,5 @@ abstract class HabitRepository {
   Future<Either<Failure, List<HabitEntity>>> getAllHabits(
       MyHabitsSearchFilterEntity filter);
   Future<Either<Failure, Nothing>> editHabit(HabitEntity habit);
+  Future<Either<Failure, Nothing>> deleteHabit(String id);
 }

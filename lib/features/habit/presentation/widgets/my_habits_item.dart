@@ -7,8 +7,12 @@ import 'package:habit_tracker_moshtari/common/gen/assets.gen.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
 import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/common/widgets/circle_progress.dart';
+import 'package:habit_tracker_moshtari/common/widgets/custom_alert_dialog.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/usecases/delete_habit_use_case.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/my_habits_llist_page.dart';
+
+import '../../../../locator.dart';
 
 class MyHabitItem extends StatelessWidget {
   const MyHabitItem({
@@ -20,7 +24,7 @@ class MyHabitItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: const ValueKey(0),
+      key: ValueKey(habit.id),
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         extentRatio: 0.35,
@@ -29,7 +33,7 @@ class MyHabitItem extends StatelessWidget {
               splashRadius: 20,
               onPressed: () async {
                 final result = await NavigationFlow.toCreateHabit(habit);
-                if (result) {
+                if (result != null && result) {
                   myHabitsListKey.currentState?.refresh();
                 }
               },
@@ -42,7 +46,18 @@ class MyHabitItem extends StatelessWidget {
           ),
           IconButton(
               splashRadius: 20,
-              onPressed: () {},
+              onPressed: () async {
+                final delete = await showCustomAlertDialog(
+                    context,
+                    'delete_habit_dialog_title'.tr(),
+                    'delete_habit_dialog_message'.tr());
+                if (delete) {
+                  final either = await sl<DeleteHabitUseCase>()(habit.id);
+                  either.fold(
+                      (l) => context.showMessage(l.message, SnackBarType.error),
+                      (r) => myHabitsListKey.currentState?.refresh());
+                }
+              },
               icon: const Icon(
                 Icons.delete,
                 color: Colors.red,

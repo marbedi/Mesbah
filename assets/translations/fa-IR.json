@@ -72,7 +72,11 @@
     "habit_created_successfully":"عادت با موفقیت ساخته شد",
     "habit_updated_successfully":"عادت با موفقیت آپدیت شد",
     "not_found":"موردی یافت نشد",
-    "day":"در روز"
+    "day":"در روز",
+    "delete_habit_dialog_title":"حذف عادت",
+    "delete_habit_dialog_message":"آیا از حذف این عادت مطمئن هستید؟",
+    "no":"نه",
+    "yes":"آره"
 
     
    

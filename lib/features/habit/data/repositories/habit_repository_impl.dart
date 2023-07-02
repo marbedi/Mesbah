@@ -26,4 +26,9 @@ class HabitRepositoryImpl implements HabitRepository {
   Future<Either<Failure, Nothing>> editHabit(HabitEntity habit) async {
     return await dataSource.editHabit(habit).toEither();
   }
+
+  @override
+  Future<Either<Failure, Nothing>> deleteHabit(String id) async {
+    return await dataSource.deleteHabit(id).toEither();
+  }
 }
