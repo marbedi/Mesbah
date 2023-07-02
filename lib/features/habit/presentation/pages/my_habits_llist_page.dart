@@ -15,7 +15,7 @@ import '../../../../locator.dart';
 import '../../domain/entities/my_habits_search_filter.dart';
 import '../widgets/category_filter_item.dart';
 import '../widgets/my_habits_item.dart';
-import '../widgets/search_bar.dart';
+import '../widgets/search_bar.dart' as s;
 
 final _myHabitsListKey = GlobalKey<_ListState>();
 
@@ -53,7 +53,7 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
                   toolbarHeight: 70,
                   leading: const SizedBox(),
                   snap: true,
-                  title: SearchBar(
+                  title: s.SearchBar(
                     hasFilter: filter.hasFilter,
                     onFilter: () {
                       showModalBottomSheet(
