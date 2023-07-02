@@ -4,9 +4,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
+import 'package:habit_tracker_moshtari/common/usecases/usecase.dart';
 import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/usecases/get_all_habits_use_case.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/widgets/todo_habit_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -17,7 +19,7 @@ import '../widgets/category_filter_item.dart';
 import '../widgets/my_habits_item.dart';
 import '../widgets/search_bar.dart' as s;
 
-final _myHabitsListKey = GlobalKey<_ListState>();
+final myHabitsListKey = GlobalKey<_ListState>();
 
 class MyHabitsListPage extends StatefulWidget {
   const MyHabitsListPage({super.key});
@@ -30,12 +32,15 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
   @override
   Widget build(BuildContext context) {
     final filter =
-        _myHabitsListKey.currentState?.filter ?? MyHabitsSearchFilterEntity();
+        myHabitsListKey.currentState?.filter ?? MyHabitsSearchFilterEntity();
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: context.colorScheme.primary,
-          onPressed: () {
-            NavigationFlow.toCreateHabit();
+          onPressed: () async {
+            final created = await NavigationFlow.toCreateHabit();
+            if (created != null && created) {
+              myHabitsListKey.currentState?.refresh();
+            }
           },
           child: Icon(
             Icons.add,
@@ -64,9 +69,9 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
                         context: context,
                         builder: (context) {
                           return _FilterBottomSheet(
-                            filter: _myHabitsListKey.currentState!.filter,
+                            filter: myHabitsListKey.currentState!.filter,
                             onFilter: (MyHabitsSearchFilterEntity f) {
-                              _myHabitsListKey.currentState!.updateFilter(f);
+                              myHabitsListKey.currentState!.updateFilter(f);
                               setState(() {});
                             },
                           );
@@ -74,8 +79,8 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
                       );
                     },
                     onSearch: (val) {
-                      // athleteListKey.currentState!
-                      //     .updateFilter(AthleteListSearchEntity(name: val));
+                      myHabitsListKey.currentState!.updateFilter(filter
+                          .copyWith(searchText: val.isEmpty ? null : val));
                     },
                   ),
                 ),
@@ -90,7 +95,7 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
                       CategoryFilterItem(
                         onTap: () {},
                         isSelected: true,
-                        text: Constants.habitStatusFilter[_myHabitsListKey
+                        text: Constants.habitStatusFilter[myHabitsListKey
                             .currentState!.filter.selectedStatus],
                       ),
                     ],
@@ -113,7 +118,7 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
                   ),
                 Expanded(
                   child: _List(
-                    key: _myHabitsListKey,
+                    key: myHabitsListKey,
                   ),
                 ),
               ],
@@ -212,16 +217,6 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                   itemBuilder: (context, index) {
                     final isSelected = filter.selectedCategory
                         .any((element) => element == index);
-                    // if (index == 0) {
-                    //   return _CategoryFilterItem(
-                    //     isSelected: isSelected,
-                    //     onTap: () {
-                    //       setState(() {
-                    //         filter = filter.copyWith(selectedCategory: index);
-                    //       });
-                    //     },
-                    //   );
-                    // }
                     final c = Constants.categoryList[index];
                     return CategoryFilterItem(
                       c: c,
@@ -341,25 +336,15 @@ class _ListState extends State<_List> {
 
   void updateFilter(MyHabitsSearchFilterEntity newFilter) async {
     filter = newFilter;
-    await Future.delayed(const Duration(milliseconds: 300));
     _pagingController.refresh();
   }
 
   MyHabitsSearchFilterEntity filter = MyHabitsSearchFilterEntity();
   Future<void> _fetchPage(int pageKey) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    // final either = await sl<GetAthletesUseCase>()(
-    //     AthleteListInputParams(key: pageKey, searchParameters: filter));
-    // either.fold((l) => _pagingController.error == l.message, (r) {
-    //   final isLastPage = r.data.length < r.pageSize;
-    //   if (isLastPage) {
-    //     _pagingController.appendLastPage(r.data);
-    //   } else {
-    //     _pagingController.appendPage(r.data, r.page + 1);
-    //   }
-    // });
-    _pagingController
-        .appendLastPage([fakeHabit, fakeHabit, fakeHabit, fakeHabit]);
+    final either = await sl<GetAllHabitsUseCase>()(filter);
+    either.fold((l) => _pagingController.error == l.message, (r) {
+      _pagingController.appendLastPage(r);
+    });
   }
 
   @override

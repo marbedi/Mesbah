@@ -10,6 +10,7 @@ class SelectWeekDayField extends StatelessWidget {
     super.key,
     required this.name,
     this.validator,
+    this.onChanged,
     this.smallSize = false,
     this.initialValue = const [
       0,
@@ -19,6 +20,7 @@ class SelectWeekDayField extends StatelessWidget {
       4,
     ],
   });
+  final Function(List<int>? days)? onChanged;
   final String name;
   final List<int> initialValue;
   final String? Function(List<int>?)? validator;
@@ -28,6 +30,7 @@ class SelectWeekDayField extends StatelessWidget {
     return FormBuilderField<List<int>>(
         initialValue: initialValue,
         validator: validator,
+        onChanged: onChanged,
         builder: (field) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

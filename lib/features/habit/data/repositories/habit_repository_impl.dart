@@ -6,11 +6,24 @@ import 'package:habit_tracker_moshtari/features/habit/data/data_sources/habit_lo
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/repositories/habit_repository.dart';
 
+import '../../domain/entities/my_habits_search_filter.dart';
+
 class HabitRepositoryImpl implements HabitRepository {
   final HabitLocalDataSource dataSource;
   HabitRepositoryImpl({required this.dataSource});
   @override
   Future<Either<Failure, Nothing>> createHabit(HabitEntity habit) async {
     return await dataSource.createHabit(habit).toEither();
+  }
+
+  @override
+  Future<Either<Failure, List<HabitEntity>>> getAllHabits(
+      MyHabitsSearchFilterEntity filter) async {
+    return await dataSource.getAllHabits(filter).toEither();
+  }
+
+  @override
+  Future<Either<Failure, Nothing>> editHabit(HabitEntity habit) async {
+    return await dataSource.editHabit(habit).toEither();
   }
 }

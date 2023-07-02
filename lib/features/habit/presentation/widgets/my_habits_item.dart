@@ -1,10 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/gen/assets.gen.dart';
+import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
+import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/common/widgets/circle_progress.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/pages/my_habits_llist_page.dart';
 
 class MyHabitItem extends StatelessWidget {
   const MyHabitItem({
@@ -23,7 +27,12 @@ class MyHabitItem extends StatelessWidget {
         children: [
           IconButton(
               splashRadius: 20,
-              onPressed: () {},
+              onPressed: () async {
+                final result = await NavigationFlow.toCreateHabit(habit);
+                if (result) {
+                  myHabitsListKey.currentState?.refresh();
+                }
+              },
               icon: const Icon(
                 Icons.edit,
                 size: 25,
@@ -57,7 +66,8 @@ class MyHabitItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
-                  child: Assets.icons.television.image(width: 20, height: 20)),
+                  child: Constants.habitIcons[habit.icon]
+                      .image(width: 20, height: 20)),
             ),
             const SizedBox(
               width: 10,
@@ -81,7 +91,7 @@ class MyHabitItem extends StatelessWidget {
                         size: 15,
                       ),
                       Text(
-                        '${habit.habitGoal.currentStep}/${habit.habitGoal.totalStep}  ${habit.period.periodType.toText}'
+                        '${habit.period.currentDayStep}/${habit.period.dayStep}  ${'day'.tr()}'
                             .toFarsiNumber(),
                         style: context.textTheme.labelMedium!
                             .copyWith(fontSize: 11, color: Colors.grey[400]),
