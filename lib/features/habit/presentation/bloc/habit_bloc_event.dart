@@ -11,3 +11,8 @@ class GetTodoListEvent extends HabitBlocEvent {
   final Jalali date;
   const GetTodoListEvent({required this.date});
 }
+
+class GetMyHabitsListEvent extends HabitBlocEvent {
+  final MyHabitsSearchFilterEntity filter;
+  const GetMyHabitsListEvent({required this.filter});
+}

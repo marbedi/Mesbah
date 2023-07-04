@@ -38,5 +38,6 @@ Future<void> setup() async {
   sl.registerLazySingleton(() => GetHabitByDateUseCase(repository: sl()));
   sl.registerLazySingleton(() => CompleteHabitUseCase(repository: sl()));
 
-  sl.registerFactory(() => HabitBloc(getHabitByDateUseCase: sl()));
+  sl.registerFactory(
+      () => HabitBloc(getHabitByDateUseCase: sl(), getAllHabitsUseCase: sl()));
 }

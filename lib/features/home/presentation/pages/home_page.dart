@@ -73,7 +73,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const TodoHabitListPage(),
             ),
             const CategoryListPage(),
-            const MyHabitsListPage()
+            BlocProvider<HabitBloc>(
+              create: (context) => sl(),
+              child: const MyHabitsListPage(),
+            )
           ],
         ));
   }

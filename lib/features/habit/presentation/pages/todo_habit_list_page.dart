@@ -153,6 +153,8 @@ class _ListState extends State<_List> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HabitBloc, HabitBlocState>(
+      buildWhen: (previous, current) =>
+          previous.todoListStates != current.todoListStates,
       builder: (context, state) {
         if (state.todoListStates is TodoListLoading) {
           return const Center(child: LoadingWidget());

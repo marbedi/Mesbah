@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
@@ -9,10 +10,14 @@ import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/usecases/get_all_habits_use_case.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/my_habit_list_state.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/todo_habit_list_page.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/widgets/todo_habit_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:lottie/lottie.dart';
 
+import '../../../../common/gen/assets.gen.dart';
 import '../../../../common/widgets/loading_widget.dart';
 import '../../../../locator.dart';
 import '../../domain/entities/my_habits_search_filter.dart';
@@ -118,9 +123,6 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
                           .toList(),
                     ),
                   ),
-                const SizedBox(
-                  height: 5,
-                ),
                 Expanded(
                   child: _List(
                     key: myHabitsListKey,
@@ -332,65 +334,68 @@ class _List extends StatefulWidget {
   State<_List> createState() => _ListState();
 }
 
-late PagingController<int, HabitEntity> _pagingController;
-
 class _ListState extends State<_List> {
   void refresh() {
-    _pagingController.refresh();
+    context.read<HabitBloc>().add(GetMyHabitsListEvent(filter: filter));
   }
 
   void updateFilter(MyHabitsSearchFilterEntity newFilter) async {
     filter = newFilter;
-    _pagingController.refresh();
+    refresh();
   }
 
   MyHabitsSearchFilterEntity filter = MyHabitsSearchFilterEntity();
-  Future<void> _fetchPage(int pageKey) async {
-    final either = await sl<GetAllHabitsUseCase>()(filter);
-    either.fold((l) => _pagingController.error == l.message, (r) {
-      _pagingController.appendLastPage(r);
-    });
-  }
 
   @override
   void initState() {
-    _pagingController = sl();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    refresh();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        _pagingController.refresh();
+    return BlocBuilder<HabitBloc, HabitBlocState>(
+      buildWhen: (previous, current) =>
+          previous.myHabitListStates != current.myHabitListStates,
+      builder: (context, state) {
+        if (state.myHabitListStates is MyHabitListLoading) {
+          return const Center(child: LoadingWidget());
+        }
+        if (state.myHabitListStates is MyHabitListFailure) {
+          return Center(
+            child: Text(
+              (state.myHabitListStates as MyHabitListFailure).message,
+              style: context.textTheme.labelMedium,
+            ),
+          );
+        }
+        if (state.myHabitListStates is MyHabitListSuccess) {
+          final habits = (state.myHabitListStates as MyHabitListSuccess).habits;
+          if (habits.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(Assets.animations.empty, height: 160),
+                  Text(
+                    'empty_my_habit_list_message'.tr(),
+                    style: context.textTheme.labelMedium,
+                  ),
+                ],
+              ),
+            );
+          }
+          return RefreshIndicator(
+              onRefresh: () async {
+                refresh();
+              },
+              child: ListView.builder(
+                  padding: const EdgeInsets.only(top: 5),
+                  itemCount: habits.length,
+                  itemBuilder: (c, i) => MyHabitItem(habit: habits[i])));
+        }
+        return const SizedBox();
       },
-      child: PagedListView<int, HabitEntity>(
-        padding: EdgeInsets.zero,
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<HabitEntity>(
-            noItemsFoundIndicatorBuilder: (val) => Center(
-                  child: Text(
-                    'not_found'.tr(),
-                    style: context.textTheme.labelMedium,
-                  ),
-                ),
-            firstPageProgressIndicatorBuilder: (val) =>
-                const Center(child: LoadingWidget()),
-            newPageProgressIndicatorBuilder: (val) =>
-                const Center(child: LoadingWidget()),
-            firstPageErrorIndicatorBuilder: (val) => Center(
-                  child: Text(
-                    'unexpected_failure_message'.tr(),
-                    style: context.textTheme.labelMedium,
-                  ),
-                ),
-            itemBuilder: (context, item, index) => MyHabitItem(
-                  habit: item,
-                )),
-      ),
     );
   }
 }

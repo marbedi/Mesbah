@@ -78,7 +78,8 @@
     "no":"نه",
     "yes":"آره",
     "empty_habit_list_message":"هیچ عادتی برای امروز ثبت نشده است",
-    "completed":"انجام شده"
+    "completed":"انجام شده",
+    "empty_my_habit_list_message":"عادتی یافت نشد"
 
     
    
