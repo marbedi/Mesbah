@@ -30,6 +30,7 @@ class HabitEntityAdapter extends TypeAdapter<HabitEntity> {
       reminders:
           fields[10] == null ? [] : (fields[10] as List).cast<ReminderEntity>(),
       completionDates: (fields[12] as List).cast<DateTime>(),
+      currentDayStep: fields[13] as int,
       completed: fields[11] as bool,
     );
   }
@@ -37,7 +38,7 @@ class HabitEntityAdapter extends TypeAdapter<HabitEntity> {
   @override
   void write(BinaryWriter writer, HabitEntity obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -63,7 +64,9 @@ class HabitEntityAdapter extends TypeAdapter<HabitEntity> {
       ..writeByte(11)
       ..write(obj.completed)
       ..writeByte(12)
-      ..write(obj.completionDates);
+      ..write(obj.completionDates)
+      ..writeByte(13)
+      ..write(obj.currentDayStep);
   }
 
   @override
@@ -135,14 +138,13 @@ class PeriodAdapter extends TypeAdapter<Period> {
       weekDays: (fields[2] as List?)?.cast<int>(),
       monthDays: (fields[3] as List?)?.cast<int>(),
       dayStep: fields[4] as int,
-      currentDayStep: fields[5] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Period obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(1)
       ..write(obj.periodType)
       ..writeByte(2)
@@ -150,9 +152,7 @@ class PeriodAdapter extends TypeAdapter<Period> {
       ..writeByte(3)
       ..write(obj.monthDays)
       ..writeByte(4)
-      ..write(obj.dayStep)
-      ..writeByte(5)
-      ..write(obj.currentDayStep);
+      ..write(obj.dayStep);
   }
 
   @override

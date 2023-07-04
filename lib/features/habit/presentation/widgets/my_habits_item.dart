@@ -108,7 +108,7 @@ class MyHabitItem extends StatelessWidget {
                         size: 15,
                       ),
                       Text(
-                        '${habit.period.currentDayStep}/${habit.period.dayStep}  ${'day'.tr()}'
+                        '${habit.currentDayStep}/${habit.period.dayStep}  ${'day'.tr()}'
                             .toFarsiNumber(),
                         style: context.textTheme.labelMedium!
                             .copyWith(fontSize: 11, color: Colors.grey[400]),

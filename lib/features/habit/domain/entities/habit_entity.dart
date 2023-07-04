@@ -32,6 +32,9 @@ class HabitEntity extends HiveObject {
   final bool completed;
   @HiveField(12)
   final List<DateTime> completionDates;
+  @HiveField(13)
+  final int currentDayStep;
+  bool get todayIsCompleted => completionDates.length >= period.dayStep;
   HabitEntity(
       {required this.id,
       required this.title,
@@ -45,36 +48,39 @@ class HabitEntity extends HiveObject {
       required this.period,
       this.reminders = const [],
       this.completionDates = const [],
+      this.currentDayStep = 0,
       this.completed = false});
 
-  HabitEntity copyWith({
-    String? id,
-    String? title,
-    String? desc,
-    int? icon,
-    int? categoryId,
-    bool? isPublic,
-    HabitGoal? habitGoal,
-    Period? period,
-    DateTime? startDate,
-    DateTime? endDate,
-    List<ReminderEntity>? reminders,
-    bool? completed,
-  }) {
+  HabitEntity copyWith(
+      {String? id,
+      String? title,
+      String? desc,
+      int? icon,
+      int? categoryId,
+      bool? isPublic,
+      HabitGoal? habitGoal,
+      Period? period,
+      DateTime? startDate,
+      DateTime? endDate,
+      List<ReminderEntity>? reminders,
+      bool? completed,
+      List<DateTime>? completionDates,
+      int? currentDayStep}) {
     return HabitEntity(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      desc: desc ?? this.desc,
-      icon: icon ?? this.icon,
-      categoryId: categoryId ?? this.categoryId,
-      isPublic: isPublic ?? this.isPublic,
-      habitGoal: habitGoal ?? this.habitGoal,
-      period: period ?? this.period,
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
-      reminders: reminders ?? this.reminders,
-      completed: completed ?? this.completed,
-    );
+        id: id ?? this.id,
+        title: title ?? this.title,
+        desc: desc ?? this.desc,
+        icon: icon ?? this.icon,
+        categoryId: categoryId ?? this.categoryId,
+        isPublic: isPublic ?? this.isPublic,
+        habitGoal: habitGoal ?? this.habitGoal,
+        period: period ?? this.period,
+        startDate: startDate ?? this.startDate,
+        endDate: endDate ?? this.endDate,
+        reminders: reminders ?? this.reminders,
+        completed: completed ?? this.completed,
+        currentDayStep: currentDayStep ?? this.currentDayStep,
+        completionDates: completionDates ?? this.completionDates);
   }
 }
 
@@ -116,7 +122,7 @@ class HabitGoal {
       this.totalStep = 1,
       this.unit,
       this.currentStep = 0});
-
+  bool get goalCompleted => currentStep >= totalStep;
   HabitGoal copyWith({
     GoalType? goalType,
     int? totalStep,
@@ -142,28 +148,24 @@ class Period {
   final List<int>? monthDays;
   @HiveField(4)
   final int dayStep;
-  @HiveField(5)
-  final int currentDayStep;
+
   Period({
     required this.periodType,
     this.weekDays,
     this.monthDays,
     this.dayStep = 1,
-    this.currentDayStep = 0,
   });
   Period copyWith({
     PeriodType? periodType,
     List<int>? weekDays,
     List<int>? monthDays,
     int? dayStep,
-    int? currentDayStep,
   }) =>
       Period(
         periodType: periodType ?? this.periodType,
         weekDays: weekDays ?? this.weekDays,
         monthDays: monthDays ?? this.monthDays,
         dayStep: dayStep ?? this.dayStep,
-        currentDayStep: currentDayStep ?? this.currentDayStep,
       );
 }
 

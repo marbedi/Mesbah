@@ -6,23 +6,23 @@ import 'package:habit_tracker_moshtari/common/widgets/circle_progress.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 
 class TodoHabitItem extends StatelessWidget {
-  const TodoHabitItem({
-    super.key,
-    required this.habit,
-  });
-
+  const TodoHabitItem(
+      {super.key, required this.habit, this.onCheckTap, required this.isToday});
+  final Function()? onCheckTap;
   final HabitEntity habit;
+  final bool isToday;
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: const ValueKey(0),
+      key: ValueKey(habit.id),
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         extentRatio: 0.24,
         children: [
           IconButton(
               splashRadius: 20,
-              onPressed: () {},
+              onPressed:
+                  (isToday && !habit.todayIsCompleted) ? onCheckTap : null,
               icon: const Icon(
                 Icons.check_rounded,
                 size: 30,
@@ -67,9 +67,8 @@ class TodoHabitItem extends StatelessWidget {
               ],
             )),
             CircleProgress(
-              currentStep: habit.habitGoal.currentStep,
-              totalSteps: habit.habitGoal.totalStep,
-            ),
+                currentStep: habit.currentDayStep,
+                totalSteps: habit.period.dayStep),
           ],
         ),
       ),

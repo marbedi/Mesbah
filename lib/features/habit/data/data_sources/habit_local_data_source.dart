@@ -1,5 +1,6 @@
 import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/usecases/complete_habit_use_case.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
@@ -12,6 +13,7 @@ abstract class HabitLocalDataSource {
   Future<List<HabitEntity>> getHabitsByDate(Jalali date);
   Future<Nothing> editHabit(HabitEntity habitEntity);
   Future<Nothing> deleteHabit(String id);
+  Future<Nothing> complete(CompleteHabitUseCaseParams params);
 }
 
 class HabitLocalDataSourceImpl implements HabitLocalDataSource {
@@ -48,7 +50,13 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
       }
     }
 
-    return list.toList();
+    return list
+        .map((e) => e.copyWith(
+            currentDayStep: e.completionDates
+                .where((element) => element.isToday())
+                .toList()
+                .length))
+        .toList();
   }
 
   @override
@@ -77,6 +85,11 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
     List<HabitEntity> habits = [];
 
     for (var habit in allHabits) {
+      habit = habit.copyWith(
+          currentDayStep: habit.completionDates
+              .where((element) => element.isToday(date.toDateTime()))
+              .toList()
+              .length);
       if (date.toDateTime().isBetween(habit.startDate, habit.endDate)! &&
           !habit.completed) {
         if (habit.period.periodType == PeriodType.everyDay) {
@@ -97,5 +110,34 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
       }
     }
     return habits;
+  }
+
+  @override
+  Future<Nothing> complete(CompleteHabitUseCaseParams params) async {
+    final list = habitBox.values.toList();
+    final index = list.indexWhere((element) => element.id == params.id);
+    final habit = habitBox.values.toList()[index];
+    if (index != -1) {
+      if (habit.completionDates
+                  .where((element) => element.isToday())
+                  .toList()
+                  .length >=
+              habit.period.dayStep ||
+          habit.habitGoal.goalCompleted) {
+        return Nothing();
+      }
+      HabitEntity updatedHabit = habit.copyWith(
+          completionDates: [...habit.completionDates, DateTime.now()]);
+
+      if (habit.habitGoal.goalType == GoalType.integer &&
+          params.value != null) {
+        updatedHabit = updatedHabit.copyWith(
+            habitGoal: updatedHabit.habitGoal.copyWith(
+                currentStep:
+                    updatedHabit.habitGoal.currentStep + params.value!));
+      }
+      habitBox.putAt(index, updatedHabit);
+    }
+    return Nothing();
   }
 }

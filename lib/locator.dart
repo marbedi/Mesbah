@@ -3,6 +3,7 @@ import 'package:habit_tracker_moshtari/features/habit/data/data_sources/habit_lo
 import 'package:habit_tracker_moshtari/features/habit/data/repositories/habit_repository_impl.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/repositories/habit_repository.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/usecases/complete_habit_use_case.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/usecases/create_habit_use_case.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/usecases/delete_habit_use_case.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/usecases/edit_habit_use_case.dart';
@@ -35,6 +36,7 @@ Future<void> setup() async {
   sl.registerLazySingleton(() => EditHabitUseCase(repository: sl()));
   sl.registerLazySingleton(() => DeleteHabitUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetHabitByDateUseCase(repository: sl()));
+  sl.registerLazySingleton(() => CompleteHabitUseCase(repository: sl()));
 
   sl.registerFactory(() => HabitBloc(getHabitByDateUseCase: sl()));
 }

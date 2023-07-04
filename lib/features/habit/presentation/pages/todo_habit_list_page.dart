@@ -7,6 +7,7 @@ import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/utils/utils.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/usecases/complete_habit_use_case.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/todo_list_state.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/widgets/todo_habit_item.dart';
@@ -16,6 +17,7 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../../../../common/gen/assets.gen.dart';
 import '../../../../common/widgets/loading_widget.dart';
+import '../../../../locator.dart';
 import '../widgets/date_list_items.dart';
 
 final todoHabitsList = GlobalKey<_ListState>();
@@ -175,7 +177,23 @@ class _ListState extends State<_List> {
               itemCount: list.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (c, i) => TodoHabitItem(habit: list[i]));
+              itemBuilder: (c, i) {
+                final habit = list[i];
+                return TodoHabitItem(
+                  habit: habit,
+                  isToday: widget.date.isToday(),
+                  onCheckTap: () async {
+                    final either = await sl<CompleteHabitUseCase>()(
+                        CompleteHabitUseCaseParams(
+                      id: habit.id,
+                    ));
+                    either.fold(
+                        (l) =>
+                            context.showMessage(l.message, SnackBarType.error),
+                        (r) => todoHabitsList.currentState?.refresh());
+                  },
+                );
+              });
         }
         return const SizedBox();
       },
