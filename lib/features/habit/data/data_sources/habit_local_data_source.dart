@@ -44,9 +44,11 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
     }
     if (filter.selectedStatus != 0) {
       if (filter.selectedStatus == 2) {
-        list = list.where((element) => element.completed).toList();
+        list =
+            list.where((element) => element.habitGoal.goalCompleted).toList();
       } else if (filter.selectedStatus == 1) {
-        list = list.where((element) => !element.completed).toList();
+        list =
+            list.where((element) => !element.habitGoal.goalCompleted).toList();
       }
     }
 
@@ -91,7 +93,7 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
               .toList()
               .length);
       if (date.toDateTime().isBetween(habit.startDate, habit.endDate)! &&
-          !habit.completed) {
+          !habit.habitGoal.goalCompleted) {
         if (habit.period.periodType == PeriodType.everyDay) {
           habits.add(habit);
         }

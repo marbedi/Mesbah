@@ -118,6 +118,9 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
                           .toList(),
                     ),
                   ),
+                const SizedBox(
+                  height: 5,
+                ),
                 Expanded(
                   child: _List(
                     key: myHabitsListKey,

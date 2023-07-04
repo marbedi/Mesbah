@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/gen/assets.gen.dart';
+import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/common/widgets/circle_progress.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 
@@ -36,7 +37,6 @@ class TodoHabitItem extends StatelessWidget {
         ),
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-        height: 60,
         child: Row(
           children: [
             Container(
@@ -47,7 +47,8 @@ class TodoHabitItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
-                  child: Assets.icons.television.image(width: 20, height: 20)),
+                  child: Constants.habitIcons[habit.icon]
+                      .image(width: 20, height: 20)),
             ),
             const SizedBox(
               width: 10,
@@ -59,10 +60,12 @@ class TodoHabitItem extends StatelessWidget {
                 Text(
                   habit.title,
                   style: context.textTheme.labelMedium,
+                  maxLines: 1,
                 ),
                 Text(
                   habit.desc,
                   style: context.textTheme.labelSmall,
+                  maxLines: 1,
                 )
               ],
             )),

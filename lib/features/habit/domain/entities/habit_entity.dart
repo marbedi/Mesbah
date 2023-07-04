@@ -28,28 +28,27 @@ class HabitEntity extends HiveObject {
   final DateTime endDate;
   @HiveField(10, defaultValue: [])
   final List<ReminderEntity> reminders;
-  @HiveField(11)
-  final bool completed;
+
   @HiveField(12)
   final List<DateTime> completionDates;
   @HiveField(13)
   final int currentDayStep;
   bool get todayIsCompleted => completionDates.length >= period.dayStep;
-  HabitEntity(
-      {required this.id,
-      required this.title,
-      required this.desc,
-      required this.isPublic,
-      required this.icon,
-      required this.categoryId,
-      required this.startDate,
-      required this.endDate,
-      this.habitGoal = const HabitGoal(),
-      required this.period,
-      this.reminders = const [],
-      this.completionDates = const [],
-      this.currentDayStep = 0,
-      this.completed = false});
+  HabitEntity({
+    required this.id,
+    required this.title,
+    required this.desc,
+    required this.isPublic,
+    required this.icon,
+    required this.categoryId,
+    required this.startDate,
+    required this.endDate,
+    this.habitGoal = const HabitGoal(),
+    required this.period,
+    this.reminders = const [],
+    this.completionDates = const [],
+    this.currentDayStep = 0,
+  });
 
   HabitEntity copyWith(
       {String? id,
@@ -63,7 +62,6 @@ class HabitEntity extends HiveObject {
       DateTime? startDate,
       DateTime? endDate,
       List<ReminderEntity>? reminders,
-      bool? completed,
       List<DateTime>? completionDates,
       int? currentDayStep}) {
     return HabitEntity(
@@ -78,7 +76,6 @@ class HabitEntity extends HiveObject {
         startDate: startDate ?? this.startDate,
         endDate: endDate ?? this.endDate,
         reminders: reminders ?? this.reminders,
-        completed: completed ?? this.completed,
         currentDayStep: currentDayStep ?? this.currentDayStep,
         completionDates: completionDates ?? this.completionDates);
   }

@@ -108,8 +108,10 @@ class MyHabitItem extends StatelessWidget {
                         size: 15,
                       ),
                       Text(
-                        '${habit.currentDayStep}/${habit.period.dayStep}  ${'day'.tr()}'
-                            .toFarsiNumber(),
+                        habit.habitGoal.goalCompleted
+                            ? 'completed'.tr()
+                            : '${habit.currentDayStep}/${habit.period.dayStep}  ${'day'.tr()}'
+                                .toFarsiNumber(),
                         style: context.textTheme.labelMedium!
                             .copyWith(fontSize: 11, color: Colors.grey[400]),
                       )

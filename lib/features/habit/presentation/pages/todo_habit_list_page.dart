@@ -1,17 +1,22 @@
 import 'package:easy_localization/easy_localization.dart' as t;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
+import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
 import 'package:habit_tracker_moshtari/common/utils/utils.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/usecases/complete_habit_use_case.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/todo_list_state.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/widgets/todo_habit_item.dart';
 import 'package:habit_tracker_moshtari/helper/date_helper.dart';
+import 'package:habit_tracker_moshtari/helper/validator.dart';
 import 'package:lottie/lottie.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
@@ -21,6 +26,7 @@ import '../../../../locator.dart';
 import '../widgets/date_list_items.dart';
 
 final todoHabitsList = GlobalKey<_ListState>();
+final goalFormKey = GlobalKey<FormBuilderState>();
 
 class TodoHabitListPage extends StatefulWidget {
   const TodoHabitListPage({super.key});
@@ -183,10 +189,28 @@ class _ListState extends State<_List> {
                   habit: habit,
                   isToday: widget.date.isToday(),
                   onCheckTap: () async {
-                    final either = await sl<CompleteHabitUseCase>()(
-                        CompleteHabitUseCaseParams(
-                      id: habit.id,
-                    ));
+                    var either;
+                    if (habit.habitGoal.goalType == GoalType.integer) {
+                      final value = await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (c) => GoalInputBottomSheet(
+                                habit: habit,
+                                c: c,
+                              ));
+                      if (value != null) {
+                        either = await sl<CompleteHabitUseCase>()(
+                            CompleteHabitUseCaseParams(
+                          id: habit.id,
+                          value: int.parse(value),
+                        ));
+                      }
+                    } else {
+                      either = await sl<CompleteHabitUseCase>()(
+                          CompleteHabitUseCaseParams(
+                        id: habit.id,
+                      ));
+                    }
                     either.fold(
                         (l) =>
                             context.showMessage(l.message, SnackBarType.error),
@@ -197,6 +221,59 @@ class _ListState extends State<_List> {
         }
         return const SizedBox();
       },
+    );
+  }
+}
+
+class GoalInputBottomSheet extends StatelessWidget {
+  GoalInputBottomSheet({super.key, required this.habit, required this.c});
+  final BuildContext c;
+  final HabitEntity habit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      margin: EdgeInsets.only(bottom: MediaQuery.of(c).viewInsets.bottom),
+      child: FormBuilder(
+        key: goalFormKey,
+        child: Row(
+          children: [
+            Expanded(
+              child: FormBuilderTextField(
+                name: 'value',
+                decoration: InputDecoration(
+                    isDense: false,
+                    errorStyle: context.textTheme.labelSmall!.copyWith(
+                      color: context.colorScheme.error,
+                    ),
+                    contentPadding: const EdgeInsets.all(5),
+                    hintStyle: context.textTheme.labelMedium!
+                        .copyWith(color: Colors.grey[400]),
+                    hintText: habit.habitGoal.unit ?? ''),
+                style: context.textTheme.labelMedium,
+                validator: Validator.required(),
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            IconButton(
+                splashRadius: 25,
+                onPressed: () {
+                  if (goalFormKey.currentState!.saveAndValidate()) {
+                    NavigationFlow.back(
+                        goalFormKey.currentState?.value['value']);
+                  }
+                },
+                icon: Icon(
+                  Icons.check,
+                  color: context.colorScheme.onBackground,
+                ))
+          ],
+        ),
+      ),
     );
   }
 }

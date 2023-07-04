@@ -77,7 +77,8 @@
     "delete_habit_dialog_message":"آیا از حذف این عادت مطمئن هستید؟",
     "no":"نه",
     "yes":"آره",
-    "empty_habit_list_message":"هیچ عادتی برای امروز ثبت نشده است"
+    "empty_habit_list_message":"هیچ عادتی برای امروز ثبت نشده است",
+    "completed":"انجام شده"
 
     
    
