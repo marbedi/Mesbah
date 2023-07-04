@@ -1,19 +1,24 @@
 import 'package:easy_localization/easy_localization.dart' as t;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/utils/utils.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/todo_list_state.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/widgets/todo_habit_item.dart';
 import 'package:habit_tracker_moshtari/helper/date_helper.dart';
+import 'package:lottie/lottie.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../../../../common/gen/assets.gen.dart';
-import '../../../../common/widgets/circle_progress.dart';
+import '../../../../common/widgets/loading_widget.dart';
 import '../widgets/date_list_items.dart';
+
+final todoHabitsList = GlobalKey<_ListState>();
 
 class TodoHabitListPage extends StatefulWidget {
   const TodoHabitListPage({super.key});
@@ -47,7 +52,6 @@ class _TodoHabitListPageState extends State<TodoHabitListPage> {
   @override
   void initState() {
     selectedDate = DateTime.now();
-
     _datesScrollController = ScrollController(
         initialScrollOffset: (DateHelper.daysOfMonth.indexWhere(
                     (element) => (element).isSameDate(selectedDate)) -
@@ -94,6 +98,10 @@ class _TodoHabitListPageState extends State<TodoHabitListPage> {
                             setState(() {
                               selectedDate = day.toDateTime();
                             });
+                            SchedulerBinding.instance.addPostFrameCallback((_) {
+                              context.read<HabitBloc>().add(GetTodoListEvent(
+                                  date: selectedDate.toJalali()));
+                            });
                           },
                         );
                       },
@@ -102,17 +110,76 @@ class _TodoHabitListPageState extends State<TodoHabitListPage> {
                 ),
               ),
               SliverToBoxAdapter(
-                  child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => TodoHabitItem(
-                  habit: fakeHabit,
-                ),
+                  child: _List(
+                date: selectedDate,
+                key: todoHabitsList,
               ))
             ],
           )),
     ));
+  }
+}
+
+class _List extends StatefulWidget {
+  const _List({super.key, required this.date});
+  final DateTime date;
+  @override
+  State<_List> createState() => _ListState();
+}
+
+class _ListState extends State<_List> {
+  @override
+  void initState() {
+    context
+        .read<HabitBloc>()
+        .add(GetTodoListEvent(date: widget.date.toJalali()));
+    super.initState();
+  }
+
+  void refresh() {
+    context
+        .read<HabitBloc>()
+        .add(GetTodoListEvent(date: widget.date.toJalali()));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HabitBloc, HabitBlocState>(
+      builder: (context, state) {
+        if (state.todoListStates is TodoListLoading) {
+          return const Center(child: LoadingWidget());
+        }
+        if (state.todoListStates is TodoListFailure) {
+          Text(
+            (state.todoListStates as TodoListFailure).message,
+            style: context.textTheme.labelMedium,
+          );
+        }
+        if (state.todoListStates is TodoListSuccess) {
+          final list = (state.todoListStates as TodoListSuccess).habits;
+          if (list.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(Assets.animations.empty, height: 160),
+                  Text(
+                    'empty_habit_list_message'.tr(),
+                    style: context.textTheme.labelMedium,
+                  ),
+                ],
+              ),
+            );
+          }
+          return ListView.builder(
+              itemCount: list.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (c, i) => TodoHabitItem(habit: list[i]));
+        }
+        return const SizedBox();
+      },
+    );
   }
 }
 

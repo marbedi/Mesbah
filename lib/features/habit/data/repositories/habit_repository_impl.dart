@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:habit_tracker_moshtari/features/habit/data/data_sources/habit_local_data_source.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/repositories/habit_repository.dart';
+import 'package:persian_datetime_picker/src/date/src/jalali/jalali_date.dart';
 
 import '../../domain/entities/my_habits_search_filter.dart';
 
@@ -30,5 +31,11 @@ class HabitRepositoryImpl implements HabitRepository {
   @override
   Future<Either<Failure, Nothing>> deleteHabit(String id) async {
     return await dataSource.deleteHabit(id).toEither();
+  }
+
+  @override
+  Future<Either<Failure, List<HabitEntity>>> getHabitsByDate(
+      Jalali date) async {
+    return await dataSource.getHabitsByDate(date).toEither();
   }
 }

@@ -1,8 +1,11 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/category_list_page.dart';
 
+import '../../../../locator.dart';
 import '../../../habit/presentation/pages/todo_habit_list_page.dart';
 import '../../../habit/presentation/pages/my_habits_llist_page.dart';
 
@@ -64,10 +67,13 @@ class _HomeScreenState extends State<HomeScreen> {
               currentIndex = i;
             });
           },
-          children: const [
-            TodoHabitListPage(),
-            CategoryListPage(),
-            MyHabitsListPage()
+          children: [
+            BlocProvider<HabitBloc>(
+              create: (context) => sl(),
+              child: const TodoHabitListPage(),
+            ),
+            const CategoryListPage(),
+            const MyHabitsListPage()
           ],
         ));
   }

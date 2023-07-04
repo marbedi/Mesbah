@@ -18,7 +18,7 @@ class TodoHabitItem extends StatelessWidget {
       key: const ValueKey(0),
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
-        extentRatio: 0.35,
+        extentRatio: 0.24,
         children: [
           IconButton(
               splashRadius: 20,
@@ -26,16 +26,6 @@ class TodoHabitItem extends StatelessWidget {
               icon: const Icon(
                 Icons.check_rounded,
                 size: 30,
-              )),
-          const SizedBox(
-            width: 10,
-          ),
-          IconButton(
-              splashRadius: 20,
-              onPressed: () {},
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
               )),
         ],
       ),

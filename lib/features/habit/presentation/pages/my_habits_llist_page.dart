@@ -9,6 +9,7 @@ import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/usecases/get_all_habits_use_case.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/pages/todo_habit_list_page.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/widgets/todo_habit_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -40,6 +41,7 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
             final created = await NavigationFlow.toCreateHabit();
             if (created != null && created) {
               myHabitsListKey.currentState?.refresh();
+              todoHabitsList.currentState?.refresh();
             }
           },
           child: Icon(

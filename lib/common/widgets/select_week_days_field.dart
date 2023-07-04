@@ -13,11 +13,11 @@ class SelectWeekDayField extends StatelessWidget {
     this.onChanged,
     this.smallSize = false,
     this.initialValue = const [
-      0,
       1,
       2,
       3,
       4,
+      5,
     ],
   });
   final Function(List<int>? days)? onChanged;
@@ -40,7 +40,7 @@ class SelectWeekDayField extends StatelessWidget {
                 runSpacing: 5,
                 children: Constants.weekDays.map((e) {
                   final isSelected = field.value!
-                      .any((val) => Constants.weekDays.indexOf(e) == val);
+                      .any((val) => Constants.weekDays.indexOf(e) == val - 1);
 
                   return Material(
                     type: MaterialType.transparency,
@@ -52,9 +52,10 @@ class SelectWeekDayField extends StatelessWidget {
                         field.didChange(isSelected
                             ? values!
                                 .where((element) =>
-                                    element != Constants.weekDays.indexOf(e))
+                                    element !=
+                                    Constants.weekDays.indexOf(e) + 1)
                                 .toList()
-                            : [...values!, Constants.weekDays.indexOf(e)]);
+                            : [...values!, Constants.weekDays.indexOf(e) + 1]);
                       },
                       child: Ink(
                         width: smallSize ? 30 : null,

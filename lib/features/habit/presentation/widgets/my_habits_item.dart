@@ -13,6 +13,7 @@ import 'package:habit_tracker_moshtari/features/habit/domain/usecases/delete_hab
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/my_habits_llist_page.dart';
 
 import '../../../../locator.dart';
+import '../pages/todo_habit_list_page.dart';
 
 class MyHabitItem extends StatelessWidget {
   const MyHabitItem({
@@ -35,6 +36,7 @@ class MyHabitItem extends StatelessWidget {
                 final result = await NavigationFlow.toCreateHabit(habit);
                 if (result != null && result) {
                   myHabitsListKey.currentState?.refresh();
+                  todoHabitsList.currentState?.refresh();
                 }
               },
               icon: const Icon(

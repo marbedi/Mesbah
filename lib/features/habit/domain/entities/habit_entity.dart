@@ -30,6 +30,8 @@ class HabitEntity extends HiveObject {
   final List<ReminderEntity> reminders;
   @HiveField(11)
   final bool completed;
+  @HiveField(12)
+  final List<DateTime> completionDates;
   HabitEntity(
       {required this.id,
       required this.title,
@@ -42,6 +44,7 @@ class HabitEntity extends HiveObject {
       this.habitGoal = const HabitGoal(),
       required this.period,
       this.reminders = const [],
+      this.completionDates = const [],
       this.completed = false});
 
   HabitEntity copyWith({
