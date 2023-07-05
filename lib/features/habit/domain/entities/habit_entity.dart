@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/reminder.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -33,7 +34,9 @@ class HabitEntity extends HiveObject {
   final List<DateTime> completionDates;
   @HiveField(13)
   final int currentDayStep;
-  bool get todayIsCompleted => completionDates.length >= period.dayStep;
+  bool get todayIsCompleted =>
+      completionDates.where((element) => element.isToday()).length >=
+      period.dayStep;
   HabitEntity({
     required this.id,
     required this.title,

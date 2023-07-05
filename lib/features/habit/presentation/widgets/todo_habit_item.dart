@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
-import 'package:habit_tracker_moshtari/common/gen/assets.gen.dart';
 import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/common/widgets/circle_progress.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';

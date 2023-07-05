@@ -187,6 +187,7 @@ class _ListState extends State<_List> {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (c, i) {
                 final habit = list[i];
+
                 return TodoHabitItem(
                   habit: habit,
                   isToday: widget.date.isToday(),
