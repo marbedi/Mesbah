@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart' as t;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/extensions/date.dart';
+import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
 import 'package:habit_tracker_moshtari/common/utils/utils.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
@@ -20,6 +23,7 @@ import 'package:lottie/lottie.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../../../../common/gen/assets.gen.dart';
+import '../../../../common/utils/constants.dart';
 import '../../../../common/widgets/loading_widget.dart';
 import '../../../../locator.dart';
 import '../widgets/date_list_items.dart';
@@ -283,7 +287,7 @@ class GoalInputBottomSheet extends StatelessWidget {
   }
 }
 
-class _Header extends StatelessWidget {
+class _Header extends StatefulWidget {
   const _Header({
     super.key,
     required bool isShrink,
@@ -292,9 +296,28 @@ class _Header extends StatelessWidget {
   final bool _isShrink;
 
   @override
+  State<_Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends State<_Header> {
+  String getVers(bool showMeaning) {
+    final keys = Constants.quranVerses.keys.toList();
+    final randomKey = keys[randomNumber];
+    return showMeaning ? Constants.quranVerses[randomKey] as String : randomKey;
+  }
+
+  @override
+  void initState() {
+    randomNumber = Random().nextInt(Constants.quranVerses.keys.length);
+    super.initState();
+  }
+
+  bool showMeaning = false;
+  int randomNumber = 0;
+  @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      title: _isShrink ? const _TimesWidget().animate().fadeIn() : null,
+      title: widget._isShrink ? const _TimesWidget().animate().fadeIn() : null,
       pinned: true,
       // backgroundColor: context.colorScheme.primary,
 
@@ -328,11 +351,18 @@ class _Header extends StatelessWidget {
                 const SizedBox(
                   width: 12,
                 ),
-                Expanded(
-                  child: Text(
-                    'وَلْیَعْفُوا وَلْیَصْفَحُوا أَلَا تُحِبُّونَ أَن یَغْفِرَ اللَّهُ لَکُمْ وَاللَّهُ غَفُورٌ رَّحِیمٌ (۲۲-نور)',
-                    style: context.textTheme.labelMedium!
-                        .copyWith(fontSize: 14, color: Colors.white),
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showMeaning = !showMeaning;
+                      });
+                    },
+                    child: Text(
+                      getVers(showMeaning).toFarsiNumber(),
+                      style: context.textTheme.labelMedium!
+                          .copyWith(fontSize: 14, color: Colors.white),
+                    ),
                   ),
                 )
               ],
