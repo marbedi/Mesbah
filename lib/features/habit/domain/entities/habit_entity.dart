@@ -34,29 +34,32 @@ class HabitEntity extends HiveObject {
   final List<DateTime> completionDates;
   @HiveField(13)
   final int currentDayStep;
+  @HiveField(14)
+  final String? longDesc;
   bool get todayIsCompleted =>
       completionDates.where((element) => element.isToday()).length >=
       period.dayStep;
-  HabitEntity({
-    required this.id,
-    required this.title,
-    required this.desc,
-    required this.isPublic,
-    required this.icon,
-    required this.categoryId,
-    required this.startDate,
-    required this.endDate,
-    this.habitGoal = const HabitGoal(),
-    required this.period,
-    this.reminders = const [],
-    this.completionDates = const [],
-    this.currentDayStep = 0,
-  });
+  HabitEntity(
+      {required this.id,
+      required this.title,
+      required this.desc,
+      required this.isPublic,
+      required this.icon,
+      required this.categoryId,
+      required this.startDate,
+      required this.endDate,
+      this.habitGoal = const HabitGoal(),
+      required this.period,
+      this.reminders = const [],
+      this.completionDates = const [],
+      this.currentDayStep = 0,
+      this.longDesc});
 
   HabitEntity copyWith(
       {String? id,
       String? title,
       String? desc,
+      String? longDesc,
       int? icon,
       int? categoryId,
       bool? isPublic,
@@ -71,6 +74,7 @@ class HabitEntity extends HiveObject {
         id: id ?? this.id,
         title: title ?? this.title,
         desc: desc ?? this.desc,
+        longDesc: longDesc ?? this.longDesc,
         icon: icon ?? this.icon,
         categoryId: categoryId ?? this.categoryId,
         isPublic: isPublic ?? this.isPublic,

@@ -37,7 +37,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       'description':
           'با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است',
       'color': const Color(0xff768DFD),
-      'image': Assets.images.onboarding1.path
+      'image': Assets.images.onboarding3.path
     },
   ];
   late LiquidController liquidController;
@@ -70,13 +70,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.all(20),
-                        height: 300,
                         decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0),
                             shape: BoxShape.circle),
-                        width: 300,
                         child: Image.asset(
-                            onBoardingData[index]['image'].toString()),
+                          onBoardingData[index]['image'].toString(),
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                          height: 200,
+                        ),
                       ),
                       const SizedBox(
                         height: 30,

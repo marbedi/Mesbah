@@ -189,6 +189,9 @@ class _ListState extends State<_List> {
 
                 return TodoHabitItem(
                   habit: habit,
+                  onTap: () {
+                    NavigationFlow.toHabitInfo(habit);
+                  },
                   isToday: widget.date.isToday(),
                   onCheckTap: () async {
                     var either;

@@ -29,7 +29,7 @@ final lightTheme = ThemeData.light().copyWith(
     ),
   ),
   scaffoldBackgroundColor: Color(0xffF5F9FA),
-  textTheme: const TextTheme(
+  textTheme: TextTheme(
       labelSmall: TextStyle(
           color: textColor,
           fontWeight: FontWeight.w300,
@@ -54,5 +54,6 @@ final lightTheme = ThemeData.light().copyWith(
       primary: Color(0xff825AE3),
       background: Color(0xffefefef),
       surface: Colors.white,
+      onSurface: Colors.black,
       secondaryContainer: Color(0xffE8F1F5)),
 );

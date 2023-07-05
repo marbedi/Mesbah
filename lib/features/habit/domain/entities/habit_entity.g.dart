@@ -31,13 +31,14 @@ class HabitEntityAdapter extends TypeAdapter<HabitEntity> {
           fields[10] == null ? [] : (fields[10] as List).cast<ReminderEntity>(),
       completionDates: (fields[12] as List).cast<DateTime>(),
       currentDayStep: fields[13] as int,
+      longDesc: fields[14] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HabitEntity obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -63,7 +64,9 @@ class HabitEntityAdapter extends TypeAdapter<HabitEntity> {
       ..writeByte(12)
       ..write(obj.completionDates)
       ..writeByte(13)
-      ..write(obj.currentDayStep);
+      ..write(obj.currentDayStep)
+      ..writeByte(14)
+      ..write(obj.longDesc);
   }
 
   @override

@@ -387,7 +387,12 @@ class _ListState extends State<_List> {
               child: ListView.builder(
                   padding: const EdgeInsets.only(top: 5),
                   itemCount: habits.length,
-                  itemBuilder: (c, i) => MyHabitItem(habit: habits[i])));
+                  itemBuilder: (c, i) => MyHabitItem(
+                        habit: habits[i],
+                        onTap: () {
+                          NavigationFlow.toHabitInfo(habits[i]);
+                        },
+                      )));
         }
         return const SizedBox();
       },
