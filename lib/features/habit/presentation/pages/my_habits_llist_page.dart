@@ -5,21 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
-import 'package:habit_tracker_moshtari/common/usecases/usecase.dart';
 import 'package:habit_tracker_moshtari/common/utils/constants.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/usecases/get_all_habits_use_case.dart';
+
 import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/my_habit_list_state.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/todo_habit_list_page.dart';
-import 'package:habit_tracker_moshtari/features/habit/presentation/widgets/todo_habit_item.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
 import 'package:lottie/lottie.dart';
 
 import '../../../../common/gen/assets.gen.dart';
 import '../../../../common/widgets/loading_widget.dart';
-import '../../../../locator.dart';
 import '../../domain/entities/my_habits_search_filter.dart';
 import '../widgets/category_filter_item.dart';
 import '../widgets/my_habits_item.dart';

@@ -8,7 +8,6 @@ import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
-import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/common/widgets/titled_date_picker.dart';
 import 'package:habit_tracker_moshtari/common/widgets/titled_dropdown.dart';
 import 'package:habit_tracker_moshtari/common/widgets/titled_textfield.dart';
@@ -26,7 +25,6 @@ import '../../../../common/widgets/select_category_widget.dart';
 import '../../../../common/widgets/select_month_days_field.dart';
 import '../../../../common/widgets/select_week_days_field.dart';
 import '../../../../locator.dart';
-import '../widgets/category_filter_item.dart';
 
 class CreateHabitPage extends StatefulWidget {
   const CreateHabitPage({super.key, this.habit});
