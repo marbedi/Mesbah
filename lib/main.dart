@@ -1,4 +1,6 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
@@ -10,6 +12,7 @@ import 'package:habit_tracker_moshtari/helper/alram_manager.dart';
 import 'package:habit_tracker_moshtari/router/router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'common/gen/assets.gen.dart';
 import 'common/widgets/loading_widget.dart';
@@ -21,17 +24,22 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(HabitEntityAdapter());
-
+  await Supabase.initialize(
+      url: config["supabase_url"], anonKey: config["supabase_anon_key"]);
   // tzl.initializeTimeZones();
   // print(tz.TZDateTime.now(tz.getLocation('Asia/Tehran')));
   // AlarmManager().scheduleDailyAlarm();
   await EasyLocalization.ensureInitialized();
   await setup();
   runApp(EasyLocalization(
-      supportedLocales: const [Locale('fa', 'IR')],
-      path: 'assets/translations',
-      fallbackLocale: const Locale('fa', 'IR'),
-      child: const MyApp()));
+    supportedLocales: const [Locale('fa', 'IR')],
+    path: 'assets/translations',
+    fallbackLocale: const Locale('fa', 'IR'),
+    child: DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const MyApp(),
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -44,8 +52,9 @@ class MyApp extends StatelessWidget {
       theme: config['theme'],
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
-      locale: context.locale,
       routerConfig: router,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
     );
   }
 }
@@ -68,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!GetIt.I.isRegistered<SharedPreferences>()) {
       await setup();
     }
-    final shared = sl<SharedPreferences>();
+    final shared = locator<SharedPreferences>();
     final firstLogin = shared.getBool('firstLogin') ?? true;
     await Future.delayed(const Duration(milliseconds: 1000));
     if (firstLogin) {

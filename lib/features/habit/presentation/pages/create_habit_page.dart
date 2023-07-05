@@ -53,8 +53,8 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
     return 'create_habit'.tr();
   }
 
-  final pages = [
-    const _FirstPage(),
+  final pages = const [
+    _FirstPage(),
     _SecondPage(),
     _ThirdPage(),
     _FourthPage()

@@ -37,14 +37,19 @@ class _HomeScreenState extends State<HomeScreen> {
               color: getNavItemColor(context, currentIndex, 0),
             ),
             Icon(
+              Icons.people_outline_rounded,
+              size: 25,
+              color: getNavItemColor(context, currentIndex, 1),
+            ),
+            Icon(
               Icons.list,
               size: 30,
-              color: getNavItemColor(context, currentIndex, 1),
+              color: getNavItemColor(context, currentIndex, 2),
             ),
             Icon(
               Icons.rebase_edit,
               size: 25,
-              color: getNavItemColor(context, currentIndex, 2),
+              color: getNavItemColor(context, currentIndex, 3),
             ),
           ],
           onTap: (index) {
@@ -67,7 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
           children: const [
             TodoHabitListPage(),
             CategoryListPage(),
-            MyHabitsListPage()
+            MyHabitsListPage(),
+            // CommunityPage(),
           ],
         ));
   }
