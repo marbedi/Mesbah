@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/category_list_page.dart';
 
+import '../../../auth/presentation/pages/sign_in_page.dart';
 import '../../../habit/presentation/pages/todo_habit_list_page.dart';
 import '../../../habit/presentation/pages/my_habits_llist_page.dart';
 
@@ -71,9 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           children: const [
             TodoHabitListPage(),
+            SignInPage(),
             CategoryListPage(),
             MyHabitsListPage(),
-            // CommunityPage(),
           ],
         ));
   }
