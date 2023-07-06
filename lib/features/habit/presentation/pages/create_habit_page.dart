@@ -8,6 +8,7 @@ import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
+import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/common/widgets/titled_date_picker.dart';
 import 'package:habit_tracker_moshtari/common/widgets/titled_dropdown.dart';
 import 'package:habit_tracker_moshtari/common/widgets/titled_textfield.dart';
@@ -69,15 +70,19 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
 
   void createHabit(Map<String, dynamic> map) async {
     HabitEntity habit;
-    print(map);
+
     if (widget.habit != null) {
       habit = widget.habit!.copyWith(
+          id: (widget.habit!.isDefault &&
+                  widget.habit!.endDate.isSameDate(DateTime(1, 1, 1)))
+              ? generateRandomId(10)
+              : null,
           title: map['title'],
           desc: map['detail'],
           isPublic: map['public'],
           reminders: map['reminders'],
           icon: map['icon'],
-          categoryId: map['category'],
+          categoryId: Constants.categoryList[map['category'] as int].id,
           startDate: map['start_date'],
           endDate: map['end_date'],
           habitGoal: widget.habit!.habitGoal.copyWith(
@@ -98,11 +103,12 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
       habit = HabitEntity(
           id: widget.habit?.id ?? generateRandomId(10),
           title: map['title'],
+          isDefault: false,
           desc: map['detail'],
           isPublic: map['public'],
           reminders: map['reminders'],
           icon: map['icon'],
-          categoryId: map['category'],
+          categoryId: Constants.categoryList[map['category'] as int].id,
           startDate: map['start_date'],
           endDate: map['end_date'],
           habitGoal: HabitGoal(
@@ -121,12 +127,14 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
           ));
     }
 
-    final either = widget.habit != null
+    final either = widget.habit != null &&
+            !widget.habit!.endDate.isSameDate(DateTime(1, 1, 1))
         ? await sl<EditHabitUseCase>()(habit)
         : await sl<CreateHabitUseCase>()(habit);
     either.fold((l) => context.showMessage(l.message, SnackBarType.error), (r) {
       context.showMessage(
-          widget.habit != null
+          widget.habit != null &&
+                  !widget.habit!.endDate.isSameDate(DateTime(1, 1, 1))
               ? 'habit_updated_successfully'.tr()
               : 'habit_created_successfully'.tr(),
           SnackBarType.success);
@@ -416,6 +424,7 @@ class _ThirdPageState extends State<_ThirdPage> {
       child: Column(
         children: [
           FormBuilderSwitch(
+              enabled: widget.habit != null ? !widget.habit!.isDefault : true,
               initialValue: widget.habit != null
                   ? widget.habit!.habitGoal.goalType == GoalType.binary
                       ? false
@@ -448,6 +457,9 @@ class _ThirdPageState extends State<_ThirdPage> {
                   Expanded(
                       child: TitledTextField(
                           title: 'goal'.tr(),
+                          enabled: widget.habit != null
+                              ? !widget.habit!.isDefault
+                              : true,
                           initialValue: widget.habit != null
                               ? widget.habit?.habitGoal.totalStep.toString()
                               : null,
@@ -465,6 +477,9 @@ class _ThirdPageState extends State<_ThirdPage> {
                       child: TitledTextField(
                           initialValue: widget.habit?.habitGoal.unit,
                           title: 'unit'.tr(),
+                          enabled: widget.habit != null
+                              ? !widget.habit!.isDefault
+                              : true,
                           name: 'unit',
                           validator: Validator.required(),
                           hint: 'unit_hint'.tr()))
@@ -517,6 +532,8 @@ class _SecondPageState extends State<_SecondPage> {
           TitledDropDown(
                   name: 'period',
                   title: '',
+                  enable:
+                      widget.habit != null ? !widget.habit!.isDefault : true,
                   initial:
                       widget.habit?.period.periodType ?? PeriodType.everyDay,
                   onChanged: (val) {
@@ -542,6 +559,7 @@ class _SecondPageState extends State<_SecondPage> {
             TitledWidget(
               title: 'select_week_days_title'.tr(),
               child: SelectWeekDayField(
+                enable: widget.habit != null ? !widget.habit!.isDefault : true,
                 initialValue: widget.habit?.period.weekDays ?? [],
                 name: 'week_day',
                 validator: Validator.required(),
@@ -553,6 +571,8 @@ class _SecondPageState extends State<_SecondPage> {
             TitledWidget(
                 title: 'select_week_days_title'.tr(),
                 child: SelectMonthDayField(
+                  enable:
+                      widget.habit != null ? !widget.habit!.isDefault : true,
                   name: 'month_day',
                   initialValue: widget.habit?.period.monthDays ?? [],
                   validator: Validator.required(),
@@ -564,6 +584,8 @@ class _SecondPageState extends State<_SecondPage> {
                 flex: 3,
                 child: FormBuilderCheckbox(
                     name: 'once_day',
+                    enabled:
+                        widget.habit != null ? !widget.habit!.isDefault : true,
                     initialValue: widget.habit != null
                         ? widget.habit?.period.dayStep == 1
                             ? true
@@ -589,6 +611,9 @@ class _SecondPageState extends State<_SecondPage> {
                 Expanded(
                   child: FormBuilderDropdown(
                       name: 'several_times_day_count',
+                      enabled: widget.habit != null
+                          ? !widget.habit!.isDefault
+                          : true,
                       initialValue: widget.habit?.period.dayStep,
                       validator: Validator.required(),
                       decoration: InputDecoration(
@@ -663,7 +688,10 @@ class _FirstPage extends StatelessWidget {
               title: 'category'.tr(),
               child: SelectCategoryWidget(
                 name: 'category',
-                initial: habit?.categoryId ?? 0,
+                initial: habit != null
+                    ? Constants.categoryList.indexWhere(
+                        (element) => element.id == habit?.categoryId)
+                    : 0,
                 validator: Validator.required(),
               ),
             ).animate().fadeIn(delay: 350.ms),
@@ -692,7 +720,11 @@ class _FirstPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: TitledDatePickerWidget(
-                      initialDate: habit?.endDate,
+                      initialDate: habit != null
+                          ? habit!.endDate.isSameDate(DateTime(1, 1, 1))
+                              ? null
+                              : habit?.endDate
+                          : null,
                       onChange: (d) {},
                       title: 'end_date'.tr(),
                       name: 'end_date'),

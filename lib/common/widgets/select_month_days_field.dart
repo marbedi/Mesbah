@@ -5,10 +5,15 @@ import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 
 class SelectMonthDayField extends StatelessWidget {
   const SelectMonthDayField(
-      {super.key, required this.name, this.initialValue, this.validator});
+      {super.key,
+      required this.name,
+      this.initialValue,
+      this.validator,
+      this.enable = true});
   final String name;
   final List<int>? initialValue;
   final String? Function(List<int>?)? validator;
+  final bool enable;
   @override
   Widget build(BuildContext context) {
     return FormBuilderField<List<int>>(
@@ -32,14 +37,16 @@ class SelectMonthDayField extends StatelessWidget {
                       child: InkWell(
                         customBorder: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        onTap: () {
-                          final values = field.value;
-                          field.didChange(isSelected
-                              ? values
-                                  ?.where((element) => element != e)
-                                  .toList()
-                              : [...values ?? [], e]);
-                        },
+                        onTap: enable
+                            ? () {
+                                final values = field.value;
+                                field.didChange(isSelected
+                                    ? values
+                                        ?.where((element) => element != e)
+                                        .toList()
+                                    : [...values ?? [], e]);
+                              }
+                            : null,
                         child: Ink(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(

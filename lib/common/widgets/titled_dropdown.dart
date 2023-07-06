@@ -15,7 +15,7 @@ class TitledDropDown<T> extends StatelessWidget {
   final double? titleSize;
   final bool isDense;
   final FormFieldValidator<T?>? validator;
-
+  final bool? enable;
   const TitledDropDown(
       {Key? key,
       required this.name,
@@ -28,6 +28,7 @@ class TitledDropDown<T> extends StatelessWidget {
       this.space = 5,
       this.outlineHeightSize,
       this.validator,
+      this.enable,
       this.titleSize,
       this.isDense = false})
       : super(key: key);
@@ -50,6 +51,7 @@ class TitledDropDown<T> extends StatelessWidget {
                   initialValue: initial,
                   name: name,
                   items: items,
+                  enabled: enable ?? true,
                   onChanged: onChanged,
                 ),
               )
@@ -57,6 +59,7 @@ class TitledDropDown<T> extends StatelessWidget {
                 initialValue: initial,
                 name: name,
                 isDense: false,
+                enabled: enable ?? true,
                 items: items,
                 onChanged: onChanged,
                 validator: validator,

@@ -16,7 +16,7 @@ class HabitEntity extends HiveObject {
   @HiveField(3)
   final int icon;
   @HiveField(4)
-  final int categoryId;
+  final String categoryId;
   @HiveField(5)
   final bool isPublic;
   @HiveField(6, defaultValue: HabitGoal())
@@ -35,7 +35,11 @@ class HabitEntity extends HiveObject {
   @HiveField(13)
   final int currentDayStep;
   @HiveField(14)
+  final int? score;
+  @HiveField(15)
   final String? longDesc;
+  @HiveField(16)
+  final bool isDefault;
   bool get todayIsCompleted =>
       completionDates.where((element) => element.isToday()).length >=
       period.dayStep;
@@ -50,9 +54,11 @@ class HabitEntity extends HiveObject {
       required this.endDate,
       this.habitGoal = const HabitGoal(),
       required this.period,
+      required this.isDefault,
       this.reminders = const [],
       this.completionDates = const [],
       this.currentDayStep = 0,
+      this.score,
       this.longDesc});
 
   HabitEntity copyWith(
@@ -61,12 +67,14 @@ class HabitEntity extends HiveObject {
       String? desc,
       String? longDesc,
       int? icon,
-      int? categoryId,
+      String? categoryId,
       bool? isPublic,
+      bool? isDefault,
       HabitGoal? habitGoal,
       Period? period,
       DateTime? startDate,
       DateTime? endDate,
+      int? score,
       List<ReminderEntity>? reminders,
       List<DateTime>? completionDates,
       int? currentDayStep}) {
@@ -79,7 +87,9 @@ class HabitEntity extends HiveObject {
         categoryId: categoryId ?? this.categoryId,
         isPublic: isPublic ?? this.isPublic,
         habitGoal: habitGoal ?? this.habitGoal,
+        isDefault: isDefault ?? this.isDefault,
         period: period ?? this.period,
+        score: score ?? this.score,
         startDate: startDate ?? this.startDate,
         endDate: endDate ?? this.endDate,
         reminders: reminders ?? this.reminders,
@@ -183,6 +193,7 @@ enum GoalType {
 
 final fakeHabit = HabitEntity(
   id: '1',
+  isDefault: false,
   endDate: DateTime.now().add(Duration(days: 30)),
   startDate: DateTime.now(),
   icon: 1,
@@ -190,5 +201,5 @@ final fakeHabit = HabitEntity(
   title: 'قرآن خواندن',
   desc: 'توضیحات قران خواندن',
   period: Period(periodType: PeriodType.everyDay),
-  categoryId: 0,
+  categoryId: '1',
 );

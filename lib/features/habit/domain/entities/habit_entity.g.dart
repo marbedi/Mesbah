@@ -22,23 +22,25 @@ class HabitEntityAdapter extends TypeAdapter<HabitEntity> {
       desc: fields[2] as String,
       isPublic: fields[5] as bool,
       icon: fields[3] as int,
-      categoryId: fields[4] as int,
+      categoryId: fields[4] as String,
       startDate: fields[8] as DateTime,
       endDate: fields[9] as DateTime,
       habitGoal: fields[6] == null ? const HabitGoal() : fields[6] as HabitGoal,
       period: fields[7] as Period,
+      isDefault: fields[16] as bool,
       reminders:
           fields[10] == null ? [] : (fields[10] as List).cast<ReminderEntity>(),
       completionDates: (fields[12] as List).cast<DateTime>(),
       currentDayStep: fields[13] as int,
-      longDesc: fields[14] as String?,
+      score: fields[14] as int?,
+      longDesc: fields[15] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HabitEntity obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -66,7 +68,11 @@ class HabitEntityAdapter extends TypeAdapter<HabitEntity> {
       ..writeByte(13)
       ..write(obj.currentDayStep)
       ..writeByte(14)
-      ..write(obj.longDesc);
+      ..write(obj.score)
+      ..writeByte(15)
+      ..write(obj.longDesc)
+      ..writeByte(16)
+      ..write(obj.isDefault);
   }
 
   @override

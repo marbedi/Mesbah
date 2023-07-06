@@ -4,46 +4,111 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
 
+import '../../features/habit/domain/entities/habit_entity.dart';
+import '../../features/habit/domain/entities/reminder.dart';
 import '../gen/assets.gen.dart';
+
+const String _hygieneId = '0';
+const String _healthId = '1';
+const String _nutritionId = '1.1';
+const String _sleepId = '1.2';
+
+const String _fitnessId = '1.3';
+const String _work = '2';
+const String _job = '2.1';
+const String _education = '2.2';
+const String _skill = '2.3';
+const String _relationships = '3';
+const String _withGod = '3.1';
+const String _withYourself = '3.2';
+const String _withOther = '3.3';
+const String _withEnvironment = '3.4';
+const String _entertainment = '4';
 
 class Constants {
   static const String habitsKey = 'habits';
+  // ids
+
+  //id
+  static final defaultHabits = [
+    HabitEntity(
+      id: generateRandomId(10),
+      isDefault: true, // in hatman baiad true bashe
+      categoryId: _hygieneId,
+      score: 0, // agar score nadarad score ro nanevisid
+      desc: 'ascasc',
+      endDate: DateTime(1, 1, 1), // hatman be in shekl bayad bashad
+      startDate: DateTime.now(),
+      icon: 0,
+      isPublic: false,
+      period: Period(
+        periodType: PeriodType.everyDay,
+        dayStep: 1,
+      ),
+      title: 'title',
+      longDesc: 'long desc',
+      habitGoal: const HabitGoal(
+          goalType: GoalType.integer, totalStep: 20, unit: 'km'),
+    ),
+    HabitEntity(
+      id: generateRandomId(10),
+      categoryId: _hygieneId,
+      isDefault: true, // in hatman baiad true bashe
+      score: 0, // agar score nadarad score ro nanevisid
+      endDate: DateTime(1, 1, 1), // hatman be in shekl bayad bashad
+
+      startDate: DateTime.now(),
+      icon: 1,
+      isPublic: false,
+      period: Period(
+          periodType: PeriodType.aFewDaysPerWeek,
+          dayStep: 3,
+          weekDays: [1, 2, 3, 4, 5, 6, 7] // hame roza
+          ),
+      title: 'title2',
+      desc: 'asc',
+      longDesc: 'long desc',
+      // habitGoal: const HabitGoal(
+      //     goalType: GoalType.integer, totalStep: 20, unit: 'km'),
+      // agar goal nadard niaz be neveshtan nist
+    ),
+  ];
   static final categoryList = [
     CategoryEntity(
-      id: '0',
+      id: _hygieneId,
       name: 'hygiene'.tr(),
       icon: Assets.icons.bathtub.path,
     ),
     CategoryEntity(
-        id: '1',
+        id: _healthId,
         name: 'health'.tr(),
         icon: Assets.icons.fitness.path,
         subCategory: [
-          CategoryEntity(id: '1.1', name: 'nutrition'.tr()),
-          CategoryEntity(id: '1.2', name: 'sleep'.tr()),
-          CategoryEntity(id: '1.3', name: 'sport'.tr()),
+          CategoryEntity(id: _nutritionId, name: 'nutrition'.tr()),
+          CategoryEntity(id: _sleepId, name: 'sleep'.tr()),
+          CategoryEntity(id: _fitnessId, name: 'sport'.tr()),
         ]),
     CategoryEntity(
-        id: '2',
+        id: _work,
         name: 'work_effort'.tr(),
         icon: Assets.icons.workEffortIcon.path,
         subCategory: [
-          CategoryEntity(id: '2.1', name: 'job'.tr()),
-          CategoryEntity(id: '2.2', name: 'education'.tr()),
-          CategoryEntity(id: '2.3', name: 'skill'.tr()),
+          CategoryEntity(id: _job, name: 'job'.tr()),
+          CategoryEntity(id: _education, name: 'education'.tr()),
+          CategoryEntity(id: _skill, name: 'skill'.tr()),
         ]),
     CategoryEntity(
-        id: '3',
+        id: _relationships,
         name: 'relationships'.tr(),
         icon: Assets.icons.relationIcon.path,
         subCategory: [
-          CategoryEntity(id: '3.1', name: 'with_god'.tr()),
-          CategoryEntity(id: '3.2', name: 'with_yourself'.tr()),
-          CategoryEntity(id: '3.3', name: 'with_other'.tr()),
-          CategoryEntity(id: '3.4', name: 'with_environment'.tr()),
+          CategoryEntity(id: _withGod, name: 'with_god'.tr()),
+          CategoryEntity(id: _withYourself, name: 'with_yourself'.tr()),
+          CategoryEntity(id: _withOther, name: 'with_other'.tr()),
+          CategoryEntity(id: _withEnvironment, name: 'with_environment'.tr()),
         ]),
     CategoryEntity(
-      id: '4',
+      id: _entertainment,
       icon: Assets.icons.television.path,
       name: 'entertainment'.tr(),
     ),

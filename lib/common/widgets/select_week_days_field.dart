@@ -10,6 +10,7 @@ class SelectWeekDayField extends StatelessWidget {
     required this.name,
     this.validator,
     this.onChanged,
+    this.enable = true,
     this.smallSize = false,
     this.initialValue = const [
       1,
@@ -24,6 +25,7 @@ class SelectWeekDayField extends StatelessWidget {
   final List<int> initialValue;
   final String? Function(List<int>?)? validator;
   final bool smallSize;
+  final bool enable;
   @override
   Widget build(BuildContext context) {
     return FormBuilderField<List<int>>(
@@ -46,16 +48,21 @@ class SelectWeekDayField extends StatelessWidget {
                     child: InkWell(
                       customBorder: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
-                      onTap: () {
-                        final values = field.value;
-                        field.didChange(isSelected
-                            ? values!
-                                .where((element) =>
-                                    element !=
-                                    Constants.weekDays.indexOf(e) + 1)
-                                .toList()
-                            : [...values!, Constants.weekDays.indexOf(e) + 1]);
-                      },
+                      onTap: enable
+                          ? () {
+                              final values = field.value;
+                              field.didChange(isSelected
+                                  ? values!
+                                      .where((element) =>
+                                          element !=
+                                          Constants.weekDays.indexOf(e) + 1)
+                                      .toList()
+                                  : [
+                                      ...values!,
+                                      Constants.weekDays.indexOf(e) + 1
+                                    ]);
+                            }
+                          : null,
                       child: Ink(
                         width: smallSize ? 30 : null,
                         height: smallSize ? 30 : null,
