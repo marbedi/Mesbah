@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
@@ -10,24 +9,29 @@ class SelectWeekDayField extends StatelessWidget {
     super.key,
     required this.name,
     this.validator,
+    this.onChanged,
+    this.enable = true,
     this.smallSize = false,
     this.initialValue = const [
-      0,
       1,
       2,
       3,
       4,
+      5,
     ],
   });
+  final Function(List<int>? days)? onChanged;
   final String name;
   final List<int> initialValue;
   final String? Function(List<int>?)? validator;
   final bool smallSize;
+  final bool enable;
   @override
   Widget build(BuildContext context) {
     return FormBuilderField<List<int>>(
         initialValue: initialValue,
         validator: validator,
+        onChanged: onChanged,
         builder: (field) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,22 +41,28 @@ class SelectWeekDayField extends StatelessWidget {
                 runSpacing: 5,
                 children: Constants.weekDays.map((e) {
                   final isSelected = field.value!
-                      .any((val) => Constants.weekDays.indexOf(e) == val);
+                      .any((val) => Constants.weekDays.indexOf(e) == val - 1);
 
                   return Material(
                     type: MaterialType.transparency,
                     child: InkWell(
                       customBorder: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
-                      onTap: () {
-                        final values = field.value;
-                        field.didChange(isSelected
-                            ? values!
-                                .where((element) =>
-                                    element != Constants.weekDays.indexOf(e))
-                                .toList()
-                            : [...values!, Constants.weekDays.indexOf(e)]);
-                      },
+                      onTap: enable
+                          ? () {
+                              final values = field.value;
+                              field.didChange(isSelected
+                                  ? values!
+                                      .where((element) =>
+                                          element !=
+                                          Constants.weekDays.indexOf(e) + 1)
+                                      .toList()
+                                  : [
+                                      ...values!,
+                                      Constants.weekDays.indexOf(e) + 1
+                                    ]);
+                            }
+                          : null,
                       child: Ink(
                         width: smallSize ? 30 : null,
                         height: smallSize ? 30 : null,

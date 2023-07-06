@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
+import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
 import 'package:habit_tracker_moshtari/common/utils/constants.dart';
@@ -14,6 +15,8 @@ import 'package:habit_tracker_moshtari/common/widgets/titled_textfield.dart';
 import 'package:habit_tracker_moshtari/common/widgets/titled_widget.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/reminder.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/usecases/create_habit_use_case.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/usecases/edit_habit_use_case.dart';
 import 'package:habit_tracker_moshtari/helper/validator.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -22,7 +25,7 @@ import '../../../../common/widgets/icon_pack_widget.dart';
 import '../../../../common/widgets/select_category_widget.dart';
 import '../../../../common/widgets/select_month_days_field.dart';
 import '../../../../common/widgets/select_week_days_field.dart';
-import '../widgets/category_filter_item.dart';
+import '../../../../locator.dart';
 
 class CreateHabitPage extends StatefulWidget {
   const CreateHabitPage({super.key, this.habit});
@@ -53,12 +56,101 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
     return 'create_habit'.tr();
   }
 
+<<<<<<< HEAD
   final pages = const [
     _FirstPage(),
     _SecondPage(),
     _ThirdPage(),
     _FourthPage()
   ];
+=======
+  List<Widget> pages = [];
+  @override
+  void initState() {
+    pages = [
+      _FirstPage(habit: widget.habit),
+      _SecondPage(habit: widget.habit),
+      _ThirdPage(habit: widget.habit),
+      _FourthPage(habit: widget.habit)
+    ];
+    super.initState();
+  }
+
+  void createHabit(Map<String, dynamic> map) async {
+    HabitEntity habit;
+
+    if (widget.habit != null) {
+      habit = widget.habit!.copyWith(
+          id: (widget.habit!.isDefault &&
+                  widget.habit!.endDate.isSameDate(DateTime(1, 1, 1)))
+              ? generateRandomId(10)
+              : null,
+          title: map['title'],
+          desc: map['detail'],
+          isPublic: map['public'],
+          reminders: map['reminders'],
+          icon: map['icon'],
+          categoryId: Constants.categoryList[map['category'] as int].id,
+          startDate: map['start_date'],
+          endDate: map['end_date'],
+          habitGoal: widget.habit!.habitGoal.copyWith(
+              goalType:
+                  map['goal'] == false ? GoalType.binary : GoalType.integer,
+              unit: map['unit'],
+              totalStep:
+                  map['goal_value'] != null ? int.parse(map['goal_value']) : 1),
+          period: widget.habit!.period.copyWith(
+            periodType: map['period'],
+            weekDays: map['week_day'],
+            monthDays: map['month_day'],
+            dayStep: map['once_day'] == true
+                ? 1
+                : map['several_times_day_count'] ?? 1,
+          ));
+    } else {
+      habit = HabitEntity(
+          id: widget.habit?.id ?? generateRandomId(10),
+          title: map['title'],
+          isDefault: false,
+          desc: map['detail'],
+          isPublic: map['public'],
+          reminders: map['reminders'],
+          icon: map['icon'],
+          categoryId: Constants.categoryList[map['category'] as int].id,
+          startDate: map['start_date'],
+          endDate: map['end_date'],
+          habitGoal: HabitGoal(
+              goalType:
+                  map['goal'] == false ? GoalType.binary : GoalType.integer,
+              unit: map['unit'],
+              totalStep:
+                  map['goal_value'] != null ? int.parse(map['goal_value']) : 1),
+          period: Period(
+            periodType: map['period'],
+            weekDays: map['week_day'],
+            monthDays: map['month_day'],
+            dayStep: map['once_day'] == true
+                ? 1
+                : map['several_times_day_count'] ?? 1,
+          ));
+    }
+
+    final either = widget.habit != null &&
+            !widget.habit!.endDate.isSameDate(DateTime(1, 1, 1))
+        ? await sl<EditHabitUseCase>()(habit)
+        : await sl<CreateHabitUseCase>()(habit);
+    either.fold((l) => context.showMessage(l.message, SnackBarType.error), (r) {
+      context.showMessage(
+          widget.habit != null &&
+                  !widget.habit!.endDate.isSameDate(DateTime(1, 1, 1))
+              ? 'habit_updated_successfully'.tr()
+              : 'habit_created_successfully'.tr(),
+          SnackBarType.success);
+      NavigationFlow.back(true);
+    });
+  }
+
+>>>>>>> master
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +226,7 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
                             }
 
                             if (currentPage == pages.length - 1) {
-                              print(_formKey.currentState?.value);
+                              createHabit(_formKey.currentState!.value);
                               return;
                             }
                             pageController.animateToPage(currentPage + 1,
@@ -163,7 +255,8 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
 }
 
 class _FourthPage extends StatefulWidget {
-  const _FourthPage({super.key});
+  const _FourthPage({super.key, this.habit});
+  final HabitEntity? habit;
 
   @override
   State<_FourthPage> createState() => _FourthPageState();
@@ -171,11 +264,16 @@ class _FourthPage extends StatefulWidget {
 
 class _FourthPageState extends State<_FourthPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: FormBuilderField<List<ReminderEntity>>(
-        initialValue: [],
+        initialValue: widget.habit?.reminders ?? [],
         builder: (field) => Column(
           children: [
             Container(
@@ -192,7 +290,9 @@ class _FourthPageState extends State<_FourthPage> {
                           context: context, initialTime: TimeOfDay.now());
                       if (time != null) {
                         field.value?.add(ReminderEntity(
-                            time: time, days: [0, 1, 2, 3, 4, 5]));
+                            id: generateRandomId(10),
+                            time: time.toDateTime(),
+                            days: [0, 1, 2, 3, 4, 5]));
                         field.didChange(field.value);
                       }
                     },
@@ -225,6 +325,7 @@ class _FourthPageState extends State<_FourthPage> {
                     itemCount: field.value?.length ?? 0,
                     itemBuilder: (c, i) {
                       final r = field.value![i];
+                      print(r.days);
                       return Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
@@ -244,7 +345,9 @@ class _FourthPageState extends State<_FourthPage> {
                             Row(
                               children: [
                                 Text(
-                                  r.time.persianFormat(context).toFarsiNumber(),
+                                  TimeOfDay.fromDateTime(r.time)
+                                      .persianFormat(context)
+                                      .toFarsiNumber(),
                                   style: context.textTheme.labelMedium!
                                       .copyWith(fontSize: 15),
                                 ),
@@ -253,9 +356,23 @@ class _FourthPageState extends State<_FourthPage> {
                                 ),
                                 Expanded(
                                     child: SelectWeekDayField(
+                                        onChanged: (days) {
+                                          int index =
+                                              field.value?.indexOf(r) ?? -1;
+                                          if (index != -1) {
+                                            final oldList = field.value;
+                                            final newList = oldList!.map((e) {
+                                              if (e.id == r.id) {
+                                                return e.copyWith(days: days);
+                                              }
+                                              return e;
+                                            }).toList();
+                                            field.didChange(newList);
+                                          }
+                                        },
                                         smallSize: true,
                                         initialValue: r.days,
-                                        name: 'reminder_week_days')),
+                                        name: r.id)),
                                 Material(
                                   type: MaterialType.transparency,
                                   shape: const CircleBorder(),
@@ -291,9 +408,8 @@ class _FourthPageState extends State<_FourthPage> {
 }
 
 class _ThirdPage extends StatefulWidget {
-  const _ThirdPage({
-    super.key,
-  });
+  const _ThirdPage({super.key, this.habit});
+  final HabitEntity? habit;
 
   @override
   State<_ThirdPage> createState() => _ThirdPageState();
@@ -301,13 +417,28 @@ class _ThirdPage extends StatefulWidget {
 
 class _ThirdPageState extends State<_ThirdPage> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        _formKey.currentState?.save();
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Column(
         children: [
           FormBuilderSwitch(
-              initialValue: false,
+              enabled: widget.habit != null ? widget.habit!.hasScore : true,
+              initialValue: widget.habit != null
+                  ? widget.habit!.habitGoal.goalType == GoalType.binary
+                      ? false
+                      : true
+                  : false,
               decoration: const InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 5, horizontal: 10)),
@@ -335,6 +466,12 @@ class _ThirdPageState extends State<_ThirdPage> {
                   Expanded(
                       child: TitledTextField(
                           title: 'goal'.tr(),
+                          enabled: widget.habit != null
+                              ? widget.habit!.hasScore
+                              : true,
+                          initialValue: widget.habit != null
+                              ? widget.habit?.habitGoal.totalStep.toString()
+                              : null,
                           keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
@@ -347,7 +484,11 @@ class _ThirdPageState extends State<_ThirdPage> {
                   ),
                   Expanded(
                       child: TitledTextField(
+                          initialValue: widget.habit?.habitGoal.unit,
                           title: 'unit'.tr(),
+                          enabled: widget.habit != null
+                              ? widget.habit!.hasScore
+                              : true,
                           name: 'unit',
                           validator: Validator.required(),
                           hint: 'unit_hint'.tr()))
@@ -361,10 +502,8 @@ class _ThirdPageState extends State<_ThirdPage> {
 }
 
 class _SecondPage extends StatefulWidget {
-  const _SecondPage({
-    super.key,
-  });
-
+  const _SecondPage({super.key, this.habit});
+  final HabitEntity? habit;
   @override
   State<_SecondPage> createState() => _SecondPageState();
 }
@@ -384,6 +523,16 @@ class _SecondPageState extends State<_SecondPage> {
   }
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        _formKey.currentState?.save();
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -392,7 +541,9 @@ class _SecondPageState extends State<_SecondPage> {
           TitledDropDown(
                   name: 'period',
                   title: '',
-                  initial: PeriodType.everyDay,
+                  enable: widget.habit != null ? widget.habit!.hasScore : true,
+                  initial:
+                      widget.habit?.period.periodType ?? PeriodType.everyDay,
                   onChanged: (val) {
                     setState(() {
                       _formKey.currentState!.save();
@@ -416,6 +567,8 @@ class _SecondPageState extends State<_SecondPage> {
             TitledWidget(
               title: 'select_week_days_title'.tr(),
               child: SelectWeekDayField(
+                enable: widget.habit != null ? widget.habit!.hasScore : true,
+                initialValue: widget.habit?.period.weekDays ?? [],
                 name: 'week_day',
                 validator: Validator.required(),
               ),
@@ -426,7 +579,9 @@ class _SecondPageState extends State<_SecondPage> {
             TitledWidget(
                 title: 'select_week_days_title'.tr(),
                 child: SelectMonthDayField(
+                  enable: widget.habit != null ? widget.habit!.hasScore : true,
                   name: 'month_day',
+                  initialValue: widget.habit?.period.monthDays ?? [],
                   validator: Validator.required(),
                 )).animate().fadeIn(),
           Row(
@@ -436,7 +591,13 @@ class _SecondPageState extends State<_SecondPage> {
                 flex: 3,
                 child: FormBuilderCheckbox(
                     name: 'once_day',
-                    initialValue: true,
+                    enabled:
+                        widget.habit != null ? widget.habit!.hasScore : true,
+                    initialValue: widget.habit != null
+                        ? widget.habit?.period.dayStep == 1
+                            ? true
+                            : false
+                        : true,
                     onChanged: (val) {
                       setState(() {
                         _formKey.currentState!.save();
@@ -457,6 +618,9 @@ class _SecondPageState extends State<_SecondPage> {
                 Expanded(
                   child: FormBuilderDropdown(
                       name: 'several_times_day_count',
+                      enabled:
+                          widget.habit != null ? widget.habit!.hasScore : true,
+                      initialValue: widget.habit?.period.dayStep,
                       validator: Validator.required(),
                       decoration: InputDecoration(
                           errorStyle: context.textTheme.labelSmall!
@@ -485,10 +649,8 @@ class _SecondPageState extends State<_SecondPage> {
 }
 
 class _FirstPage extends StatelessWidget {
-  const _FirstPage({
-    super.key,
-  });
-
+  const _FirstPage({super.key, this.habit});
+  final HabitEntity? habit;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -496,15 +658,17 @@ class _FirstPage extends StatelessWidget {
         child: Column(
           children: [
             TitledTextField(
+                    initialValue: habit?.title,
                     validator: Validator.required(),
                     title: 'name'.tr(),
-                    name: 'name',
+                    name: 'title',
                     hint: 'name_field_hint'.tr())
                 .animate()
                 .fadeIn(),
             TitledTextField(
                     validator: Validator.required(),
                     title: 'detail'.tr(),
+                    initialValue: habit?.desc,
                     name: 'detail',
                     hint: 'detail_field_hint'.tr())
                 .animate()
@@ -521,19 +685,24 @@ class _FirstPage extends StatelessWidget {
                     BoxShadow(
                         color: Colors.grey.withOpacity(0.1), blurRadius: 2)
                   ]),
-              child: const IconPackWidget(
+              child: IconPackWidget(
                 name: 'icon',
+                initialValue: habit?.icon ?? 0,
               ),
             ).animate().fadeIn(delay: 300.ms),
             TitledWidget(
               title: 'category'.tr(),
               child: SelectCategoryWidget(
                 name: 'category',
+                initial: habit != null
+                    ? Constants.categoryList.indexWhere(
+                        (element) => element.id == habit?.categoryId)
+                    : 0,
                 validator: Validator.required(),
               ),
             ).animate().fadeIn(delay: 350.ms),
             FormBuilderCheckbox(
-                initialValue: true,
+                initialValue: habit?.isPublic ?? true,
                 subtitle: Text(
                   'public_desc'.tr(),
                   style: context.textTheme.labelSmall!.copyWith(fontSize: 12),
@@ -547,7 +716,7 @@ class _FirstPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: TitledDatePickerWidget(
-                      initialDate: DateTime.now(),
+                      initialDate: habit?.startDate ?? DateTime.now(),
                       onChange: (d) {},
                       title: 'start_date'.tr(),
                       name: 'start_date'),
@@ -557,6 +726,11 @@ class _FirstPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: TitledDatePickerWidget(
+                      initialDate: habit != null
+                          ? habit!.endDate.isSameDate(DateTime(1, 1, 1))
+                              ? null
+                              : habit?.endDate
+                          : null,
                       onChange: (d) {},
                       title: 'end_date'.tr(),
                       name: 'end_date'),

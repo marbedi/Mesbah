@@ -1,13 +1,30 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+part 'reminder.g.dart';
 
+@HiveType(typeId: 6)
 class ReminderEntity {
-  final String? id;
-  final TimeOfDay time;
+  @HiveField(1)
+  final String id;
+  @HiveField(2)
+  final DateTime time;
+  @HiveField(3)
   final List<int> days;
 
-  ReminderEntity({this.id, required this.time, required this.days});
+  ReminderEntity({required this.id, required this.time, required this.days});
+
+  ReminderEntity copyWith({
+    String? id,
+    DateTime? time,
+    List<int>? days,
+  }) {
+    return ReminderEntity(
+      id: id ?? this.id,
+      time: time ?? this.time,
+      days: days ?? this.days,
+    );
+  }
 }
 
 String generateRandomId(int length) {

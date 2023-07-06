@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 
 class TitledWidget extends StatelessWidget {

@@ -8,7 +8,7 @@ import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
 import 'package:habit_tracker_moshtari/configs/config.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
-import 'package:habit_tracker_moshtari/helper/alram_manager.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/entities/reminder.dart';
 import 'package:habit_tracker_moshtari/router/router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,20 +17,28 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'common/gen/assets.gen.dart';
 import 'common/widgets/loading_widget.dart';
 import 'locator.dart';
-import 'package:timezone/data/latest.dart' as tzl;
-import 'package:timezone/standalone.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(HabitEntityAdapter());
+<<<<<<< HEAD
   await Supabase.initialize(
       url: config["supabase_url"], anonKey: config["supabase_anon_key"]);
+=======
+  Hive.registerAdapter(HabitGoalAdapter());
+  Hive.registerAdapter(PeriodAdapter());
+  Hive.registerAdapter(GoalTypeAdapter());
+  Hive.registerAdapter(PeriodTypeAdapter());
+  Hive.registerAdapter(ReminderEntityAdapter());
+
+>>>>>>> master
   // tzl.initializeTimeZones();
   // print(tz.TZDateTime.now(tz.getLocation('Asia/Tehran')));
   // AlarmManager().scheduleDailyAlarm();
   await EasyLocalization.ensureInitialized();
   await setup();
+
   runApp(EasyLocalization(
     supportedLocales: const [Locale('fa', 'IR')],
     path: 'assets/translations',
