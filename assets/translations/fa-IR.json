@@ -81,7 +81,10 @@
     "completed":"انجام شده",
     "empty_my_habit_list_message":"عادتی یافت نشد",
     "target":"هدف",
-    "current_step":"قدم فعلی"
+    "current_step":"قدم فعلی",
+    "sources":"منابع",
+    "habit_sources":"منابع عادت",
+    "source_not_found":"منبعی یافت نشد"
     
 
     

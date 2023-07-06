@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_source.dart';
 
 import '../../features/habit/domain/entities/habit_entity.dart';
 import '../../features/habit/domain/entities/reminder.dart';
@@ -77,6 +78,30 @@ class Constants {
       //     goalType: GoalType.integer, totalStep: 20, unit: 'km'),
       // agar goal nadard niaz be neveshtan nist
     ),
+  ];
+
+  static final habitSources = [
+    HabitSource(
+        link: 'http://www.google.com',
+        type: HabitSourceTypes.book,
+        desc:
+            'توضیحات توضیحات توضیحات توضیحات توضیحاتتوضیحاتتوضیحاتتوضیحات توضیحات توضیحات',
+        title: 'کتاب مثال',
+        categoryId: _sleepId),
+    HabitSource(
+        link: 'http://www.google.com',
+        type: HabitSourceTypes.site,
+        desc:
+            'توضیحات توضیحات توضیحات توضیحات توضیحاتتوضیحاتتوضیحاتتوضیحات توضیحات توضیحات',
+        title: 'سایت مثال',
+        categoryId: _sleepId),
+    HabitSource(
+        link: 'http://www.google.com',
+        desc:
+            'توضیحات توضیحات توضیحات توضیحات توضیحاتتوضیحاتتوضیحاتتوضیحات توضیحات توضیحات',
+        type: HabitSourceTypes.software,
+        title: 'برنامه مثال',
+        categoryId: _sleepId),
   ];
   static final categoryList = [
     CategoryEntity(

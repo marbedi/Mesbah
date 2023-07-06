@@ -4,6 +4,7 @@ import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_enti
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/add_habits_list_page.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/create_habit_page.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/habit_info_page.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/pages/habit_sources_page.dart';
 import 'package:habit_tracker_moshtari/features/home/presentation/pages/home_page.dart';
 import 'package:habit_tracker_moshtari/features/onboarding/pages/onboarding_page.dart';
 
@@ -41,6 +42,12 @@ final router = GoRouter(
       path: '/habit_info',
       builder: (context, state) => HabitInfoPage(
         habit: state.extra as HabitEntity,
+      ),
+    ),
+    GoRoute(
+      path: '/habit_sources',
+      builder: (context, state) => HabitSourcesPage(
+        c: state.extra as CategoryEntity,
       ),
     ),
   ],

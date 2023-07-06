@@ -27,4 +27,8 @@ class NavigationFlow {
   static toHabitInfo(HabitEntity habit) async {
     return await router.push('/habit_info', extra: habit);
   }
+
+  static toHabitSources(CategoryEntity c) async {
+    return await router.push('/habit_sources', extra: c);
+  }
 }

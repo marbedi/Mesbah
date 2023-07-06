@@ -24,6 +24,37 @@ class AddHabitsListPage extends StatelessWidget {
                 Icons.arrow_back,
                 color: context.colorScheme.onBackground,
               )),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 8.0,
+                top: 5,
+                bottom: 5,
+              ),
+              child: InkWell(
+                onTap: () {
+                  NavigationFlow.toHabitSources(c);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.source_rounded,
+                      color: context.colorScheme.onBackground,
+                      size: 20,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'sources'.tr(),
+                      style: context.textTheme.labelMedium,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
           elevation: 0,
           backgroundColor: Colors.transparent,
           title: Text(
