@@ -424,7 +424,7 @@ class _ThirdPageState extends State<_ThirdPage> {
       child: Column(
         children: [
           FormBuilderSwitch(
-              enabled: widget.habit != null ? !widget.habit!.isDefault : true,
+              enabled: widget.habit != null ? widget.habit!.hasScore : true,
               initialValue: widget.habit != null
                   ? widget.habit!.habitGoal.goalType == GoalType.binary
                       ? false
@@ -458,7 +458,7 @@ class _ThirdPageState extends State<_ThirdPage> {
                       child: TitledTextField(
                           title: 'goal'.tr(),
                           enabled: widget.habit != null
-                              ? !widget.habit!.isDefault
+                              ? widget.habit!.hasScore
                               : true,
                           initialValue: widget.habit != null
                               ? widget.habit?.habitGoal.totalStep.toString()
@@ -478,7 +478,7 @@ class _ThirdPageState extends State<_ThirdPage> {
                           initialValue: widget.habit?.habitGoal.unit,
                           title: 'unit'.tr(),
                           enabled: widget.habit != null
-                              ? !widget.habit!.isDefault
+                              ? widget.habit!.hasScore
                               : true,
                           name: 'unit',
                           validator: Validator.required(),
@@ -532,8 +532,7 @@ class _SecondPageState extends State<_SecondPage> {
           TitledDropDown(
                   name: 'period',
                   title: '',
-                  enable:
-                      widget.habit != null ? !widget.habit!.isDefault : true,
+                  enable: widget.habit != null ? widget.habit!.hasScore : true,
                   initial:
                       widget.habit?.period.periodType ?? PeriodType.everyDay,
                   onChanged: (val) {
@@ -559,7 +558,7 @@ class _SecondPageState extends State<_SecondPage> {
             TitledWidget(
               title: 'select_week_days_title'.tr(),
               child: SelectWeekDayField(
-                enable: widget.habit != null ? !widget.habit!.isDefault : true,
+                enable: widget.habit != null ? widget.habit!.hasScore : true,
                 initialValue: widget.habit?.period.weekDays ?? [],
                 name: 'week_day',
                 validator: Validator.required(),
@@ -571,8 +570,7 @@ class _SecondPageState extends State<_SecondPage> {
             TitledWidget(
                 title: 'select_week_days_title'.tr(),
                 child: SelectMonthDayField(
-                  enable:
-                      widget.habit != null ? !widget.habit!.isDefault : true,
+                  enable: widget.habit != null ? widget.habit!.hasScore : true,
                   name: 'month_day',
                   initialValue: widget.habit?.period.monthDays ?? [],
                   validator: Validator.required(),
@@ -585,7 +583,7 @@ class _SecondPageState extends State<_SecondPage> {
                 child: FormBuilderCheckbox(
                     name: 'once_day',
                     enabled:
-                        widget.habit != null ? !widget.habit!.isDefault : true,
+                        widget.habit != null ? widget.habit!.hasScore : true,
                     initialValue: widget.habit != null
                         ? widget.habit?.period.dayStep == 1
                             ? true
@@ -611,9 +609,8 @@ class _SecondPageState extends State<_SecondPage> {
                 Expanded(
                   child: FormBuilderDropdown(
                       name: 'several_times_day_count',
-                      enabled: widget.habit != null
-                          ? !widget.habit!.isDefault
-                          : true,
+                      enabled:
+                          widget.habit != null ? widget.habit!.hasScore : true,
                       initialValue: widget.habit?.period.dayStep,
                       validator: Validator.required(),
                       decoration: InputDecoration(

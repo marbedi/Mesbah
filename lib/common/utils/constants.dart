@@ -54,7 +54,7 @@ class Constants {
       id: generateRandomId(10),
       categoryId: _hygieneId,
       isDefault: true, // in hatman baiad true bashe
-      score: 0, // agar score nadarad score ro nanevisid
+      //  score: 0, // agar score nadarad score ro nanevisid
       endDate: DateTime(1, 1, 1), // hatman be in shekl bayad bashad
 
       startDate: DateTime.now(),

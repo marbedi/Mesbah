@@ -43,6 +43,8 @@ class HabitEntity extends HiveObject {
   bool get todayIsCompleted =>
       completionDates.where((element) => element.isToday()).length >=
       period.dayStep;
+
+  bool get hasScore => score != null;
   HabitEntity(
       {required this.id,
       required this.title,
