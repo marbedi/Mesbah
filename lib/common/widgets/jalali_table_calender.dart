@@ -149,6 +149,7 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
                 .length,
             widget.habit.period.dayStep);
         return Container(
+          margin: const EdgeInsets.all(5),
           decoration: BoxDecoration(
               color: getColorWithScore(habitScore),
               borderRadius: BorderRadius.circular(10)),
