@@ -65,6 +65,11 @@ class Constants {
           dayStep: 3,
           weekDays: [1, 2, 3, 4, 5, 6, 7] // hame roza
           ),
+      //  period: Period(
+      // periodType: PeriodType.aFewDaysPerMonth,
+      // dayStep: 3,
+      // monthDays: [1, 2, 10,5, 6, 7]
+      // ),
       title: 'title2',
       desc: 'asc',
       longDesc: 'long desc',
