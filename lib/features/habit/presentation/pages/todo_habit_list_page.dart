@@ -345,27 +345,29 @@ class _HeaderState extends State<_Header> {
         child: Column(
           children: [
             const _TimesWidget(),
-            Row(
-              children: [
-                Assets.images.quran.image(width: 150, height: 150),
-                const SizedBox(
-                  width: 12,
-                ),
-                Flexible(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showMeaning = !showMeaning;
-                      });
-                    },
-                    child: Text(
-                      getVers(showMeaning).toFarsiNumber(),
-                      style: context.textTheme.labelMedium!
-                          .copyWith(fontSize: 14, color: Colors.white),
-                    ),
+            Expanded(
+              child: Row(
+                children: [
+                  Assets.images.quran.image(width: 150, height: 150),
+                  const SizedBox(
+                    width: 12,
                   ),
-                )
-              ],
+                  Flexible(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          showMeaning = !showMeaning;
+                        });
+                      },
+                      child: Text(
+                        getVers(showMeaning).toFarsiNumber(),
+                        style: context.textTheme.labelMedium!
+                            .copyWith(fontSize: 14, color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         ),
