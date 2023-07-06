@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
+import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
+import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 
 class HabitItem extends StatelessWidget {
-  const HabitItem({super.key, required this.index});
+  const HabitItem({super.key, required this.index, required this.habit});
   final int index;
+  final HabitEntity habit;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,11 +29,11 @@ class HabitItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'قرآن خواندن',
+                  habit.title,
                   style: context.textTheme.labelMedium,
                 ),
                 Text(
-                  'باعث آرامش میشود',
+                  habit.desc,
                   style: context.textTheme.labelSmall,
                 ),
               ],
@@ -41,7 +44,9 @@ class HabitItem extends StatelessWidget {
             child: InkWell(
               customBorder: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
-              onTap: () {},
+              onTap: () {
+                NavigationFlow.toCreateHabit(habit);
+              },
               child: Ink(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(

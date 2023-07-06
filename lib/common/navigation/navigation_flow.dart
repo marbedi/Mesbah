@@ -20,7 +20,15 @@ class NavigationFlow {
     router.push('/habits', extra: c);
   }
 
-  static toCreateHabit([HabitEntity? habit]) {
-    return router.push('/create_habit', extra: habit);
+  static toCreateHabit([HabitEntity? habit]) async {
+    return await router.push('/create_habit', extra: habit);
+  }
+
+  static toHabitInfo(HabitEntity habit) async {
+    return await router.push('/habit_info', extra: habit);
+  }
+
+  static toHabitSources(CategoryEntity c) async {
+    return await router.push('/habit_sources', extra: c);
   }
 }

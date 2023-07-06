@@ -68,7 +68,24 @@
     "reminder_hint":"به شما یادآوری می شود که عادت خود را بررسی کنید",
     "public_title":"عادت عمومی",
     "public_desc":"با فعال بودن این گزینه عادت شما برای دیگران قابل مشاهده خواهد بود.",
-    "unexpected_failure_message":"مشکلی پیش آمد!"
+    "unexpected_failure_message":"مشکلی پیش آمد!",
+    "habit_created_successfully":"عادت با موفقیت ساخته شد",
+    "habit_updated_successfully":"عادت با موفقیت آپدیت شد",
+    "not_found":"موردی یافت نشد",
+    "day":"در روز",
+    "delete_habit_dialog_title":"حذف عادت",
+    "delete_habit_dialog_message":"آیا از حذف این عادت مطمئن هستید؟",
+    "no":"نه",
+    "yes":"آره",
+    "empty_habit_list_message":"هیچ عادتی برای امروز ثبت نشده است",
+    "completed":"انجام شده",
+    "empty_my_habit_list_message":"عادتی یافت نشد",
+    "target":"هدف",
+    "current_step":"قدم فعلی",
+    "sources":"منابع",
+    "habit_sources":"منابع عادت",
+    "source_not_found":"منبعی یافت نشد"
+    
 
     
    

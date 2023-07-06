@@ -9,6 +9,16 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsAnimationsGen {
+  const $AssetsAnimationsGen();
+
+  /// File path: assets/animations/empty.json
+  String get empty => 'assets/animations/empty.json';
+
+  /// List of all assets
+  List<String> get values => [empty];
+}
+
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
@@ -67,11 +77,16 @@ class $AssetsImagesGen {
   AssetGenImage get onboarding2 =>
       const AssetGenImage('assets/images/onboarding_2.png');
 
+  /// File path: assets/images/onboarding_3.png
+  AssetGenImage get onboarding3 =>
+      const AssetGenImage('assets/images/onboarding_3.png');
+
   /// File path: assets/images/quran.png
   AssetGenImage get quran => const AssetGenImage('assets/images/quran.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [logo, onboarding1, onboarding2, quran];
+  List<AssetGenImage> get values =>
+      [logo, onboarding1, onboarding2, onboarding3, quran];
 }
 
 class $AssetsTranslationsGen {
@@ -461,6 +476,7 @@ class $AssetsIconsHabitGen {
 class Assets {
   Assets._();
 
+  static const $AssetsAnimationsGen animations = $AssetsAnimationsGen();
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();

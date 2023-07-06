@@ -19,25 +19,25 @@ class OnBoardingPage extends StatefulWidget {
 class _OnBoardingPageState extends State<OnBoardingPage> {
   final onBoardingData = [
     {
-      'title': 'لورم ایپسوم متن ساختگی . ',
+      'title': '',
       'description':
-          'با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است',
+          """امیرالمؤمنین علی (علیهالسلام) فرمودند: إنّما قَلْبُ الحَدَثِ كالأرضِ الخالِيةِ ما اُلقِيَ فيها مِنْ شيءٍ قَبِلَتْهُ .
+قطعا دل جوان همانند زمین خالى است، هر بذرى در آن ريخته شود می‌پذيرد.""",
       'color': const Color(0xff3BC8DA),
       'image': Assets.images.onboarding1.path
     },
     {
-      'title': 'لورم ایپسوم متن ساختگی . ',
+      'title': '',
       'description':
-          'با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است',
+          'با عادت‌های خوب و مفید دينی دل و جانمان را بذرافشانی كنیم...',
       'color': const Color(0xff36DAA8),
       'image': Assets.images.onboarding2.path
     },
     {
-      'title': 'لورم ایپسوم متن ساختگی . ',
-      'description':
-          'با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است',
+      'title': '',
+      'description': 'مصباح در اين مسیر چراغ راه شماست...',
       'color': const Color(0xff768DFD),
-      'image': Assets.images.onboarding1.path
+      'image': Assets.images.onboarding3.path
     },
   ];
   late LiquidController liquidController;
@@ -70,13 +70,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.all(20),
-                        height: 300,
                         decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0),
                             shape: BoxShape.circle),
-                        width: 300,
                         child: Image.asset(
-                            onBoardingData[index]['image'].toString()),
+                          onBoardingData[index]['image'].toString(),
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                          height: 200,
+                        ),
                       ),
                       const SizedBox(
                         height: 30,
@@ -97,6 +99,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 40),
                             child: Text(
                                 onBoardingData[index]['description'].toString(),
+                                textAlign: TextAlign.center,
                                 style: context.textTheme.labelMedium!
                                     .copyWith(color: Colors.white)),
                           ),

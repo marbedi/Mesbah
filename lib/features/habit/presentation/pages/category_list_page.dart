@@ -9,8 +9,6 @@ import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
 import 'package:habit_tracker_moshtari/common/utils/constants.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
 
-import '../../../../common/gen/assets.gen.dart';
-
 class CategoryListPage extends StatefulWidget {
   const CategoryListPage({
     super.key,
