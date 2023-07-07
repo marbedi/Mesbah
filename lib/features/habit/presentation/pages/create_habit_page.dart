@@ -149,9 +149,21 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: null,
-        leadingWidth: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
+          child: TextButton(
+              onPressed: () {
+                NavigationFlow.back();
+              },
+              child: Text(
+                'cancel'.tr(),
+                maxLines: 1,
+                style: context.textTheme.labelMedium!.copyWith(fontSize: 14),
+              )),
+        ),
+        //  leadingWidth: 0,
         centerTitle: true,
+
         title: FittedBox(
           child: Text(
             getTitle(),
