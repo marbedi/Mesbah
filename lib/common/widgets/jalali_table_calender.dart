@@ -19,14 +19,16 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
   late Jalali _currentMonth;
   late List<Jalali> _visibleDates;
   getHabitScore(int current, int total) {
+    if (current == 0) return 0;
     double score = (current / total) * 4;
     int roundedScore = score.round();
 
     if (roundedScore > 4) {
       roundedScore = 4;
     } else if (roundedScore < 1) {
-      roundedScore = 0;
+      roundedScore = 1;
     }
+
     return roundedScore;
   }
 
