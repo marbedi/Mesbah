@@ -5,11 +5,7 @@ import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/category_list_page.dart';
 
-<<<<<<< HEAD
-import '../../../auth/presentation/pages/sign_in_page.dart';
-=======
 import '../../../../locator.dart';
->>>>>>> master
 import '../../../habit/presentation/pages/todo_habit_list_page.dart';
 import '../../../habit/presentation/pages/my_habits_llist_page.dart';
 
@@ -76,24 +72,16 @@ class _HomeScreenState extends State<HomeScreen> {
               currentIndex = i;
             });
           },
-<<<<<<< HEAD
-          children: const [
-            TodoHabitListPage(),
-            SignInPage(),
-            CategoryListPage(),
-            MyHabitsListPage(),
-=======
           children: [
             BlocProvider<HabitBloc>(
-              create: (context) => sl(),
+              create: (context) => locator(),
               child: const TodoHabitListPage(),
             ),
             const CategoryListPage(),
             BlocProvider<HabitBloc>(
-              create: (context) => sl(),
+              create: (context) => locator(),
               child: const MyHabitsListPage(),
             )
->>>>>>> master
           ],
         ));
   }

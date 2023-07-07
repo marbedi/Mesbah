@@ -69,7 +69,7 @@ class AuthTextField extends StatelessWidget {
           onChanged: onChanged,
           textDirection: TextDirection.ltr,
           initialValue: initialValue,
-          minLines: minLines,
+          minLines: 1,
           style: context.textTheme.labelLarge!.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.normal,
@@ -94,7 +94,7 @@ class AuthTextField extends StatelessWidget {
           keyboardType: keyboardType,
           textInputAction: action,
           inputFormatters: inputFormatters,
-          maxLines: maxLines,
+          maxLines: 1,
           validator: validator,
           maxLength: maxLength,
           onSubmitted: onSubmitted,

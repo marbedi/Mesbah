@@ -1,4 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:habit_tracker_moshtari/features/auth/data/data_source/auth_remote_data_source.dart';
+import 'package:habit_tracker_moshtari/features/auth/domain/repositories/auth_repository.dart';
+import 'package:habit_tracker_moshtari/features/auth/domain/usecases/sign_in_with_email_use_case.dart';
+import 'package:habit_tracker_moshtari/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_tracker_moshtari/features/habit/data/data_sources/habit_local_data_source.dart';
 import 'package:habit_tracker_moshtari/features/habit/data/repositories/habit_repository_impl.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
@@ -15,37 +19,47 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'features/auth/data/repositories/auth_repository_impl.dart';
+
 final locator = GetIt.instance;
 
 Future<void> setup() async {
   final habitBox = await Hive.openBox<HabitEntity>('habitBox');
+  final supabase = Supabase.instance;
 
   locator.registerSingleton<Box<HabitEntity>>(habitBox);
+  locator.registerSingleton<Supabase>(supabase);
 
   locator.registerSingleton<PagingController<int, HabitEntity>>(
       PagingController(firstPageKey: 1));
   final sharedPreferences = await SharedPreferences.getInstance();
-<<<<<<< HEAD
   locator.registerSingleton<SharedPreferences>(sharedPreferences);
 
-  final supabase = Supabase.instance;
-  locator.registerSingleton<Supabase>(supabase);
-=======
-  sl.registerSingleton<SharedPreferences>(sharedPreferences);
+  locator.registerSingleton<HabitLocalDataSource>(
+      HabitLocalDataSourceImpl(habitBox: locator()));
+  locator.registerSingleton<AuthRemoteDataSource>(
+      AuthRemoteDataSourceImpl(supabase: locator()));
 
-  sl.registerSingleton<HabitLocalDataSource>(
-      HabitLocalDataSourceImpl(habitBox: sl()));
+  locator.registerSingleton<HabitRepository>(
+      HabitRepositoryImpl(dataSource: locator()));
+  locator.registerSingleton<AuthRepository>(
+      AuthRepositoryImpl(dataSource: locator()));
 
-  sl.registerSingleton<HabitRepository>(HabitRepositoryImpl(dataSource: sl()));
+  locator
+      .registerLazySingleton(() => CreateHabitUseCase(repository: locator()));
+  locator
+      .registerLazySingleton(() => GetAllHabitsUseCase(repository: locator()));
+  locator.registerLazySingleton(() => EditHabitUseCase(repository: locator()));
+  locator
+      .registerLazySingleton(() => DeleteHabitUseCase(repository: locator()));
+  locator.registerLazySingleton(
+      () => GetHabitByDateUseCase(repository: locator()));
+  locator
+      .registerLazySingleton(() => CompleteHabitUseCase(repository: locator()));
+  locator.registerLazySingleton(
+      () => SignInWithEmailUseCase(repository: locator()));
 
-  sl.registerLazySingleton(() => CreateHabitUseCase(repository: sl()));
-  sl.registerLazySingleton(() => GetAllHabitsUseCase(repository: sl()));
-  sl.registerLazySingleton(() => EditHabitUseCase(repository: sl()));
-  sl.registerLazySingleton(() => DeleteHabitUseCase(repository: sl()));
-  sl.registerLazySingleton(() => GetHabitByDateUseCase(repository: sl()));
-  sl.registerLazySingleton(() => CompleteHabitUseCase(repository: sl()));
-
-  sl.registerFactory(
-      () => HabitBloc(getHabitByDateUseCase: sl(), getAllHabitsUseCase: sl()));
->>>>>>> master
+  locator.registerFactory(() => HabitBloc(
+      getHabitByDateUseCase: locator(), getAllHabitsUseCase: locator()));
+  locator.registerFactory(() => AuthBloc(signInWithEmailUseCase: locator()));
 }

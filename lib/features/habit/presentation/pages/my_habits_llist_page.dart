@@ -343,14 +343,7 @@ class _ListState extends State<_List> {
 
   @override
   void initState() {
-<<<<<<< HEAD
-    _pagingController = locator();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-=======
     refresh();
->>>>>>> master
     super.initState();
   }
 

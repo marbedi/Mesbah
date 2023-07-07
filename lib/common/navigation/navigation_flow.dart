@@ -31,4 +31,8 @@ class NavigationFlow {
   static toHabitSources(CategoryEntity c) async {
     return await router.push('/habit_sources', extra: c);
   }
+
+  static toAuthSignIn() async {
+    return await router.push('/auth/sign_in');
+  }
 }

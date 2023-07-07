@@ -56,14 +56,6 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
     return 'create_habit'.tr();
   }
 
-<<<<<<< HEAD
-  final pages = const [
-    _FirstPage(),
-    _SecondPage(),
-    _ThirdPage(),
-    _FourthPage()
-  ];
-=======
   List<Widget> pages = [];
   @override
   void initState() {
@@ -137,8 +129,8 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
 
     final either = widget.habit != null &&
             !widget.habit!.endDate.isSameDate(DateTime(1, 1, 1))
-        ? await sl<EditHabitUseCase>()(habit)
-        : await sl<CreateHabitUseCase>()(habit);
+        ? await locator<EditHabitUseCase>()(habit)
+        : await locator<CreateHabitUseCase>()(habit);
     either.fold((l) => context.showMessage(l.message, SnackBarType.error), (r) {
       context.showMessage(
           widget.habit != null &&
@@ -150,7 +142,6 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
     });
   }
 
->>>>>>> master
   @override
   Widget build(BuildContext context) {
     return Scaffold(

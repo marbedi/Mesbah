@@ -52,7 +52,8 @@ class MyHabitItem extends StatelessWidget {
                       'delete_habit_dialog_title'.tr(),
                       'delete_habit_dialog_message'.tr());
                   if (delete) {
-                    final either = await sl<DeleteHabitUseCase>()(habit.id);
+                    final either =
+                        await locator<DeleteHabitUseCase>()(habit.id);
                     either.fold(
                         (l) =>
                             context.showMessage(l.message, SnackBarType.error),

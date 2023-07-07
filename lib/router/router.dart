@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:habit_tracker_moshtari/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/add_habits_list_page.dart';
@@ -49,6 +50,10 @@ final router = GoRouter(
       builder: (context, state) => HabitSourcesPage(
         c: state.extra as CategoryEntity,
       ),
+    ),
+    GoRoute(
+      path: '/auth/sign_in',
+      builder: (context, state) => const AuthSignInPage(),
     ),
   ],
 );
