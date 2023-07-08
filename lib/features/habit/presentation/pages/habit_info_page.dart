@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
-import 'package:habit_tracker_moshtari/common/extensions/date.dart';
 import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
 import 'package:habit_tracker_moshtari/common/utils/constants.dart';
@@ -9,6 +9,7 @@ import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_enti
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../../../../common/widgets/jalali_table_calender.dart';
+import '../widgets/chart_bar.dart';
 
 class HabitInfoPage extends StatelessWidget {
   const HabitInfoPage({super.key, required this.habit});
@@ -177,7 +178,12 @@ class HabitInfoPage extends StatelessWidget {
               const Divider(),
               JalaliTableCalendar(
                 habit: habit,
-              )
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(),
+              HabitBarChart()
             ],
           )),
     );

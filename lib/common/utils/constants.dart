@@ -35,7 +35,7 @@ class Constants {
     HabitEntity(
       id: generateRandomId(10),
       isDefault: true, // in hatman baiad true bashe
-      categoryId: _hygieneId,
+      categoryId: _sleepId,
       score: 0, // agar score nadarad score ro nanevisid
       desc: 'ascasc',
       endDate: DateTime(1, 1, 1), // hatman be in shekl bayad bashad
