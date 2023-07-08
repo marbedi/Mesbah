@@ -725,8 +725,9 @@ class _FirstPage extends StatelessWidget {
               child: SelectCategoryWidget(
                 name: 'category',
                 initial: habit != null
-                    ? Constants.categoryList.indexWhere(
-                        (element) => element.id == habit?.categoryId)
+                    ? Constants.categoryList.indexWhere((element) =>
+                        (element.id == habit?.categoryId ||
+                            habit!.categoryId.startsWith(element.id)))
                     : 0,
                 validator: Validator.required(),
               ),

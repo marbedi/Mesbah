@@ -1,5 +1,5 @@
 class MyHabitsSearchFilterEntity {
-  final List<int> selectedCategory;
+  final List<String> selectedCategory;
   final int selectedStatus;
   final String? searchText;
   MyHabitsSearchFilterEntity({
@@ -12,7 +12,9 @@ class MyHabitsSearchFilterEntity {
   }
 
   MyHabitsSearchFilterEntity copyWith(
-      {List<int>? selectedCategory, int? selectedStatus, String? searchText}) {
+      {List<String>? selectedCategory,
+      int? selectedStatus,
+      String? searchText}) {
     return MyHabitsSearchFilterEntity(
         selectedCategory: selectedCategory ?? this.selectedCategory,
         selectedStatus: selectedStatus ?? this.selectedStatus,

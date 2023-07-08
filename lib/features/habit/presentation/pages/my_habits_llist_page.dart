@@ -112,7 +112,8 @@ class _MyHabitsListPageState extends State<MyHabitsListPage> {
                             (e) => CategoryFilterItem(
                               onTap: () {},
                               isSelected: true,
-                              c: Constants.categoryList[e],
+                              c: Constants.categoryList[Constants.categoryList
+                                  .indexWhere((element) => element.id == e)],
                             ),
                           )
                           .toList(),
@@ -217,9 +218,10 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                   itemCount: Constants.categoryList.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    final isSelected = filter.selectedCategory
-                        .any((element) => element == index);
                     final c = Constants.categoryList[index];
+
+                    final isSelected = filter.selectedCategory
+                        .any((element) => element == c.id);
                     return CategoryFilterItem(
                       c: c,
                       isSelected: isSelected,
@@ -228,13 +230,13 @@ class _FilterBottomSheetState extends State<_FilterBottomSheet> {
                           if (isSelected) {
                             filter = filter.copyWith(
                                 selectedCategory: filter.selectedCategory
-                                    .where((element) => element != index)
+                                    .where((element) => element != c.id)
                                     .toList());
                             return;
                           }
                           filter = filter.copyWith(selectedCategory: [
                             ...filter.selectedCategory,
-                            index
+                            c.id
                           ]);
                         });
                       },
