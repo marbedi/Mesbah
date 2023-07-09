@@ -208,14 +208,14 @@ class _ListState extends State<_List> {
                                 c: c,
                               ));
                       if (value != null) {
-                        either = await sl<CompleteHabitUseCase>()(
+                        either = await locator<CompleteHabitUseCase>()(
                             CompleteHabitUseCaseParams(
                           id: habit.id,
                           value: int.parse(value),
                         ));
                       }
                     } else {
-                      either = await sl<CompleteHabitUseCase>()(
+                      either = await locator<CompleteHabitUseCase>()(
                           CompleteHabitUseCaseParams(
                         id: habit.id,
                       ));

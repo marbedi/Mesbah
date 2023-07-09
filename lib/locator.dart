@@ -1,4 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:habit_tracker_moshtari/features/auth/data/data_source/auth_remote_data_source.dart';
+import 'package:habit_tracker_moshtari/features/auth/domain/repositories/auth_repository.dart';
+import 'package:habit_tracker_moshtari/features/auth/domain/usecases/sign_in_with_email_use_case.dart';
+import 'package:habit_tracker_moshtari/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_tracker_moshtari/features/habit/data/data_sources/habit_local_data_source.dart';
 import 'package:habit_tracker_moshtari/features/habit/data/repositories/habit_repository_impl.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
@@ -13,31 +17,56 @@ import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bl
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-final sl = GetIt.instance;
+import 'features/auth/data/repositories/auth_repository_impl.dart';
+import 'features/auth/domain/usecases/sign_up_with_email_use_case.dart';
+
+final locator = GetIt.instance;
 
 Future<void> setup() async {
   final habitBox = await Hive.openBox<HabitEntity>('habitBox');
+  final supabase = Supabase.instance;
 
-  sl.registerSingleton<Box<HabitEntity>>(habitBox);
+  locator.registerSingleton<Box<HabitEntity>>(habitBox);
+  locator.registerSingleton<Supabase>(supabase);
 
-  sl.registerSingleton<PagingController<int, HabitEntity>>(
+  locator.registerSingleton<PagingController<int, HabitEntity>>(
       PagingController(firstPageKey: 1));
   final sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerSingleton<SharedPreferences>(sharedPreferences);
+  locator.registerSingleton<SharedPreferences>(sharedPreferences);
 
-  sl.registerSingleton<HabitLocalDataSource>(
-      HabitLocalDataSourceImpl(habitBox: sl()));
+  locator.registerSingleton<HabitLocalDataSource>(
+      HabitLocalDataSourceImpl(habitBox: locator()));
+  locator.registerSingleton<AuthRemoteDataSource>(
+      AuthRemoteDataSourceImpl(supabase: locator()));
 
-  sl.registerSingleton<HabitRepository>(HabitRepositoryImpl(dataSource: sl()));
+  locator.registerSingleton<HabitRepository>(
+      HabitRepositoryImpl(dataSource: locator()));
+  locator.registerSingleton<AuthRepository>(
+      AuthRepositoryImpl(dataSource: locator()));
 
-  sl.registerLazySingleton(() => CreateHabitUseCase(repository: sl()));
-  sl.registerLazySingleton(() => GetAllHabitsUseCase(repository: sl()));
-  sl.registerLazySingleton(() => EditHabitUseCase(repository: sl()));
-  sl.registerLazySingleton(() => DeleteHabitUseCase(repository: sl()));
-  sl.registerLazySingleton(() => GetHabitByDateUseCase(repository: sl()));
-  sl.registerLazySingleton(() => CompleteHabitUseCase(repository: sl()));
+  locator
+      .registerLazySingleton(() => CreateHabitUseCase(repository: locator()));
+  locator
+      .registerLazySingleton(() => GetAllHabitsUseCase(repository: locator()));
+  locator.registerLazySingleton(() => EditHabitUseCase(repository: locator()));
+  locator
+      .registerLazySingleton(() => DeleteHabitUseCase(repository: locator()));
+  locator.registerLazySingleton(
+      () => GetHabitByDateUseCase(repository: locator()));
 
-  sl.registerFactory(
-      () => HabitBloc(getHabitByDateUseCase: sl(), getAllHabitsUseCase: sl()));
+  locator
+      .registerLazySingleton(() => CompleteHabitUseCase(repository: locator()));
+  locator.registerLazySingleton(
+      () => SignInWithEmailUseCase(repository: locator()));
+  locator.registerLazySingleton(
+      () => SignUpWithEmailUseCase(repository: locator()));
+
+  locator.registerFactory(() => HabitBloc(
+      getHabitByDateUseCase: locator(), getAllHabitsUseCase: locator()));
+  locator.registerFactory(() => AuthBloc(
+        signInWithEmailUseCase: locator(),
+        signUpWithEmailUseCase: locator(),
+      ));
 }

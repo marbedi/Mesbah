@@ -133,9 +133,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 onPressed: () async {
                   if (currentIndex == 2) {
                     //TODO: set first login to false
-                    final shared = sl<SharedPreferences>();
+                    final shared = locator<SharedPreferences>();
                     await shared.setBool('firstLogin', false);
-                    NavigationFlow.toHome();
+
+                    NavigationFlow.toAuthSignIn();
                     return;
                   }
                   liquidController.animateToPage(

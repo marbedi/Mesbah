@@ -1,6 +1,7 @@
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
 import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
 
+import '../../features/auth/domain/entities/user_entity.dart';
 import '../../router/router.dart';
 
 class NavigationFlow {
@@ -30,5 +31,17 @@ class NavigationFlow {
 
   static toHabitSources(CategoryEntity c) async {
     return await router.push('/habit_sources', extra: c);
+  }
+
+  static toAuthSignIn() async {
+    return await router.push('/auth_sign_in');
+  }
+
+  static toAuthSignUp() async {
+    return await router.push('/auth_sign_up');
+  }
+
+  static toProfile(UserEntity userEntity) {
+    return router.pushReplacement('/profile', extra: userEntity);
   }
 }
