@@ -24,6 +24,8 @@ class AuthTextField extends StatelessWidget {
   final Widget? suffix;
   final Widget? prefixIcon;
   final TextEditingController? controller;
+  final bool obscureText;
+  final TextDirection textDirection;
   const AuthTextField(
       {Key? key,
       required this.title,
@@ -45,7 +47,9 @@ class AuthTextField extends StatelessWidget {
       this.onSubmitted,
       this.suffix,
       this.prefixIcon,
-      this.controller})
+      this.controller,
+      required this.obscureText,
+      this.textDirection = TextDirection.ltr})
       : super(key: key);
 
   @override
@@ -67,23 +71,24 @@ class AuthTextField extends StatelessWidget {
           name: name,
           focusNode: focusNode,
           onChanged: onChanged,
-          textDirection: TextDirection.ltr,
+          textDirection: textDirection,
           initialValue: initialValue,
           minLines: 1,
           style: context.textTheme.labelLarge!.copyWith(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.normal,
           ),
           controller: controller,
+          obscureText: obscureText,
           decoration: InputDecoration(
-              hintTextDirection: TextDirection.ltr,
-              contentPadding: const EdgeInsets.all(25),
-              errorStyle: context.textTheme.labelMedium!
-                  .copyWith(color: context.colorScheme.error, fontSize: 12),
+              hintTextDirection: textDirection,
+              contentPadding: const EdgeInsets.all(18),
+              errorStyle: context.textTheme.labelMedium!.copyWith(
+                  color: context.colorScheme.error, fontSize: 12, height: 0.5),
               hintText: hint,
               filled: true,
               hintStyle: context.textTheme.labelLarge!.copyWith(
-                  fontSize: 20,
+                  fontSize: 18,
                   color: Colors.grey,
                   fontWeight: FontWeight.normal),
               fillColor: context.colorScheme.surface,

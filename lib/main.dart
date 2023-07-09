@@ -36,7 +36,9 @@ void main() async {
   // AlarmManager().scheduleDailyAlarm();
   await EasyLocalization.ensureInitialized();
   await Supabase.initialize(
-      anonKey: config["supabase_anon_key"], url: config["supabase_url"]);
+      anonKey: config["supabase_anon_key"],
+      url: config["supabase_url"],
+      localStorage: const HiveLocalStorage());
   await setup();
 
   runApp(EasyLocalization(
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: config['theme'],
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       routerConfig: router,

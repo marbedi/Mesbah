@@ -2,13 +2,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../common/usecases/usecase.dart';
 import '../../domain/entities/user_entity.dart';
+import '../../domain/usecases/get_user_data_use_case.dart';
 import '../../domain/usecases/sign_in_with_email_use_case.dart';
+import '../../domain/usecases/sign_up_with_email_use_case.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<UserEntity> getUser({required String id});
+  Future<UserEntity> getUserData(GetUserDataUseCaseParams param);
   Future<UserEntity> signInWithEmail(SignInWithEmailUseCaseParams param);
-  Future<UserEntity> signUpWithEmail(
-      {required String email, required String password});
+  Future<UserEntity> signUpWithEmail(SignUpWithEmailUseCaseParams param);
   Future<Nothing> signInWithGoogle();
   Future<Nothing> signUpWithGoogle();
   Future<Nothing> signOut();
@@ -23,11 +24,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await supabase.client.auth
         .signInWithPassword(email: param.email, password: param.password);
 
-    UserEntity userEntity = UserEntity.fromJson(supabase.client
-        .from("user")
-        .select()
+    final user = await supabase.client
+        .from("users")
+        .select<Map<String, dynamic>>()
         .eq("id", response.user!.id)
-        .toString());
+        .single();
+
+    UserEntity userEntity = UserEntity.fromMap(user);
 
     return userEntity;
   }
@@ -45,16 +48,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserEntity> signUpWithEmail(
-      {required String email, required String password}) async {
+  Future<UserEntity> signUpWithEmail(SignUpWithEmailUseCaseParams param) async {
     final response = await supabase.client.auth
-        .signInWithPassword(email: email, password: password);
+        .signUp(email: param.email, password: param.password);
 
-    UserEntity userEntity = UserEntity.fromJson(supabase.client
-        .from("user")
-        .select()
-        .eq("id", response.user!.id)
-        .toString());
+    UserEntity userEntity = UserEntity(
+        id: response.user!.id,
+        fullName: param.fullName,
+        habits: <int>[0],
+        username: param.username,
+        follows: 1,
+        profilePicture: "",
+        score: 0);
+
+    await supabase.client.from("users").insert(userEntity.toMap());
 
     return userEntity;
   }
@@ -66,8 +73,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserEntity> getUser({required String id}) {
-    // TODO: implement getUserData
-    throw UnimplementedError();
+  Future<UserEntity> getUserData(GetUserDataUseCaseParams param) async {
+    // final user = await supabase.client.auth.admin.getUserById(param.id);
+
+    final user = await supabase.client
+        .from("users")
+        .select<Map<String, dynamic>>()
+        .eq("id", param.id)
+        .single();
+
+    final UserEntity userEntity = UserEntity.fromMap(user);
+    return userEntity;
   }
 }

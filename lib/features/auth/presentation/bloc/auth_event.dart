@@ -13,3 +13,19 @@ class SignInRequestedEvent extends AuthBlocEvent {
 
   const SignInRequestedEvent({required this.email, required this.password});
 }
+
+class SignUpRequestedEvent extends AuthBlocEvent {
+  final String email;
+  final String password;
+  final String userame;
+  final String fullName;
+
+  const SignUpRequestedEvent({
+    required this.email,
+    required this.password,
+    required this.userame,
+    required this.fullName,
+  });
+}
+
+class GetCurrentUserDataEvent extends AuthBlocEvent {}
