@@ -109,9 +109,9 @@ class HabitSourcesPage extends StatelessWidget {
                           ),
                           Text(source.desc,
                               style: context.textTheme.labelSmall),
-                          Text(source.link,
-                              style: context.textTheme.labelSmall!
-                                  .copyWith(color: Colors.grey, fontSize: 12)),
+                          // Text(source.link,
+                          //     style: context.textTheme.labelSmall!
+                          //         .copyWith(color: Colors.grey, fontSize: 12)),
                         ],
                       )),
                       IconButton(
