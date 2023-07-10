@@ -6,9 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../common/navigation/navigation_flow.dart';
 import '../../../../helper/validator.dart';
+import '../../../../locator.dart';
 import '../bloc/auth_bloc.dart';
 import '../widgets/auth_text_field.dart';
 
@@ -41,12 +43,14 @@ class _AuthSignUpPageState extends State<AuthSignUpPage> {
           forceMaterialTransparency: true,
         ),
         body: BlocListener<AuthBloc, AuthBlocState>(
-          listener: (context, state) {
-            if (state.status == AuthStatus.authenticated) {
-              context.showMessage("با موفقیت وارد شدید!", SnackBarType.success);
-
+          listener: (context, state) async {
+            if (state.status == AuthStatus.success) {
+              context.showMessage(
+                  "با موفقیت ثبت نام شدید!", SnackBarType.success);
+              final shared = locator<SharedPreferences>();
+              await shared.setBool('firstLogin', false);
               NavigationFlow.toHome();
-            } else if (state.status == AuthStatus.error) {
+            } else if (state.status == AuthStatus.failure) {
               context.showMessage("مشکلی روی داده است!", SnackBarType.error);
             }
           },

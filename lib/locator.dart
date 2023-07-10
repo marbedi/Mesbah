@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'features/auth/data/repositories/auth_repository_impl.dart';
+import 'features/auth/domain/usecases/get_user_data_use_case.dart';
 import 'features/auth/domain/usecases/sign_up_with_email_use_case.dart';
 
 final locator = GetIt.instance;
@@ -62,11 +63,13 @@ Future<void> setup() async {
       () => SignInWithEmailUseCase(repository: locator()));
   locator.registerLazySingleton(
       () => SignUpWithEmailUseCase(repository: locator()));
+  locator
+      .registerLazySingleton(() => GetUserDataUseCase(repository: locator()));
 
   locator.registerFactory(() => HabitBloc(
       getHabitByDateUseCase: locator(), getAllHabitsUseCase: locator()));
   locator.registerFactory(() => AuthBloc(
-        signInWithEmailUseCase: locator(),
-        signUpWithEmailUseCase: locator(),
-      ));
+      signInWithEmailUseCase: locator(),
+      signUpWithEmailUseCase: locator(),
+      getUserDataUseCase: locator()));
 }

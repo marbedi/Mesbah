@@ -9,9 +9,11 @@ import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
 import 'package:habit_tracker_moshtari/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_tracker_moshtari/features/auth/presentation/widgets/auth_text_field.dart';
-import 'package:habit_tracker_moshtari/features/profile/presentation/pages/profile_page.dart';
+import 'package:habit_tracker_moshtari/features/auth/presentation/pages/profile_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../helper/validator.dart';
+import '../../../../locator.dart';
 
 class AuthSignInPage extends StatefulWidget {
   const AuthSignInPage({super.key});
@@ -38,13 +40,14 @@ class _AuthSignInPageState extends State<AuthSignInPage> {
         forceMaterialTransparency: true,
       ),
       body: BlocListener<AuthBloc, AuthBlocState>(
-          listener: (context, state) {
-            if (state.status == AuthStatus.authenticated) {
-              context.showMessage(
-                  "با موفقیت ثبت‌ نام شدید!", SnackBarType.success);
+          listener: (context, state) async {
+            if (state.status == AuthStatus.success) {
+              context.showMessage("با موفقیت وارد شدید!", SnackBarType.success);
 
+              final shared = locator<SharedPreferences>();
+              await shared.setBool('firstLogin', false);
               NavigationFlow.toHome();
-            } else if (state.status == AuthStatus.error) {
+            } else if (state.status == AuthStatus.failure) {
               context.showMessage(
                   "ایمیل یا رمز عبور شما نامعتبر است!", SnackBarType.error);
             }

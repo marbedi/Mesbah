@@ -38,7 +38,9 @@ void main() async {
   await Supabase.initialize(
       anonKey: config["supabase_anon_key"],
       url: config["supabase_url"],
-      localStorage: const HiveLocalStorage());
+      localStorage: const HiveLocalStorage(),
+      pkceAsyncStorage: SharedPreferencesGotrueAsyncStorage());
+
   await setup();
 
   runApp(EasyLocalization(
@@ -94,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (firstLogin) {
       NavigationFlow.toOnBoarding();
     } else {
-      NavigationFlow.toAuthSignIn();
+      NavigationFlow.toHome();
     }
   }
 

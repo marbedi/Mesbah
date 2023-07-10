@@ -29,3 +29,9 @@ class SignUpRequestedEvent extends AuthBlocEvent {
 }
 
 class GetCurrentUserDataEvent extends AuthBlocEvent {}
+
+class GetUserDataEvent extends AuthBlocEvent {
+  final String id;
+
+  const GetUserDataEvent({required this.id});
+}

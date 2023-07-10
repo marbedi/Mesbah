@@ -4,8 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
 import 'package:habit_tracker_moshtari/features/habit/presentation/pages/category_list_page.dart';
+import 'package:habit_tracker_moshtari/features/habit/presentation/pages/online_habits_list_page.dart';
+import 'package:habit_tracker_moshtari/features/auth/presentation/pages/profile_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../locator.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../habit/presentation/pages/todo_habit_list_page.dart';
 import '../../../habit/presentation/pages/my_habits_llist_page.dart';
 
@@ -40,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: getNavItemColor(context, currentIndex, 0),
             ),
             Icon(
-              Icons.people_outline_rounded,
+              Icons.public_sharp,
               size: 25,
               color: getNavItemColor(context, currentIndex, 1),
             ),
@@ -53,6 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
               Icons.rebase_edit,
               size: 25,
               color: getNavItemColor(context, currentIndex, 3),
+            ),
+            Icon(
+              Icons.person,
+              size: 25,
+              color: getNavItemColor(context, currentIndex, 4),
             ),
           ],
           onTap: (index) {
@@ -77,11 +86,19 @@ class _HomeScreenState extends State<HomeScreen> {
               create: (context) => locator(),
               child: const TodoHabitListPage(),
             ),
+            BlocProvider<HabitBloc>(
+              create: (context) => locator(),
+              child: const OnlineHabitsListPage(),
+            ),
             const CategoryListPage(),
             BlocProvider<HabitBloc>(
               create: (context) => locator(),
               child: const MyHabitsListPage(),
-            )
+            ),
+            BlocProvider<AuthBloc>(
+              create: (context) => locator(),
+              child: const ProfilePage(),
+            ),
           ],
         ));
   }

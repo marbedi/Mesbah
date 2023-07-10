@@ -30,26 +30,30 @@ final lightTheme = ThemeData.light().copyWith(
   ),
   scaffoldBackgroundColor: Color(0xffF5F9FA),
   textTheme: TextTheme(
-      labelSmall: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w300,
-          fontSize: 14,
-          fontFamily: 'vazir'),
-      labelMedium: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-          fontFamily: 'vazir'),
-      bodySmall: TextStyle(
-          color: Colors.grey,
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-          fontFamily: 'vazir'),
-      labelLarge: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w900,
-          fontSize: 20,
-          fontFamily: 'vazir')),
+    labelSmall: TextStyle(
+        color: textColor,
+        fontWeight: FontWeight.w300,
+        fontSize: 14,
+        fontFamily: 'vazir'),
+    labelMedium: TextStyle(
+        color: textColor,
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+        fontFamily: 'vazir'),
+    bodySmall: TextStyle(
+        color: Colors.grey,
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+        fontFamily: 'vazir'),
+    labelLarge: TextStyle(
+        color: textColor,
+        fontWeight: FontWeight.w900,
+        fontSize: 20,
+        fontFamily: 'vazir'),
+    headlineLarge: TextStyle(fontFamily: 'vazir'),
+    headlineMedium: TextStyle(fontFamily: 'vazir'),
+    headlineSmall: TextStyle(fontFamily: 'vazir'),
+  ),
   colorScheme: const ColorScheme.light(
       primary: Color(0xff825AE3),
       background: Color(0xffefefef),

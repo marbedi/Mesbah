@@ -12,7 +12,7 @@ import 'package:habit_tracker_moshtari/features/onboarding/pages/onboarding_page
 
 import '../features/auth/domain/entities/user_entity.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
-import '../features/profile/presentation/pages/profile_page.dart';
+import '../features/auth/presentation/pages/profile_page.dart';
 import '../features/auth/presentation/pages/sign_up_page.dart';
 import '../locator.dart';
 import '../main.dart';
@@ -76,9 +76,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/profile',
-      builder: (context, state) => ProfilePage(
-        userEntity: state.extra as UserEntity,
-      ),
+      builder: (context, state) => const ProfilePage(),
     ),
   ],
 );

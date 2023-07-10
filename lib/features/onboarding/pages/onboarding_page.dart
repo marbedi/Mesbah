@@ -23,20 +23,20 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       'description':
           """امیرالمؤمنین علی (علیهالسلام) فرمودند: إنّما قَلْبُ الحَدَثِ كالأرضِ الخالِيةِ ما اُلقِيَ فيها مِنْ شيءٍ قَبِلَتْهُ .
 قطعا دل جوان همانند زمین خالى است، هر بذرى در آن ريخته شود می‌پذيرد.""",
-      'color': const Color(0xff3BC8DA),
+      'color': Color.fromARGB(255, 174, 187, 251),
       'image': Assets.images.onboarding1.path
     },
     {
       'title': '',
       'description':
           'با عادت‌های خوب و مفید دينی دل و جانمان را بذرافشانی كنیم...',
-      'color': const Color(0xff36DAA8),
+      'color': Color.fromARGB(255, 134, 154, 254),
       'image': Assets.images.onboarding2.path
     },
     {
       'title': '',
       'description': 'مصباح در اين مسیر چراغ راه شماست...',
-      'color': const Color(0xff768DFD),
+      'color': Color.fromARGB(255, 92, 119, 255),
       'image': Assets.images.onboarding3.path
     },
   ];
@@ -132,10 +132,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               child: TextButton(
                 onPressed: () async {
                   if (currentIndex == 2) {
-                    //TODO: set first login to false
-                    final shared = locator<SharedPreferences>();
-                    await shared.setBool('firstLogin', false);
-
                     NavigationFlow.toAuthSignIn();
                     return;
                   }
