@@ -1,4 +1,4 @@
-import 'package:habit_tracker_moshtari/configs/theme.dart';
+import 'package:mesbah/configs/theme.dart';
 
 final Map<String, dynamic> config = {
   'theme': lightTheme,
