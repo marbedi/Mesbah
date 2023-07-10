@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.habit_tracker_moshtari">
+    package="ir.mesbah.mesbah">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 <uses-permission android:name="android.permission.WAKE_LOCK"/>
 <!-- For apps with targetSDK=31 (Android 12) -->
@@ -7,7 +7,7 @@
 <uses-permission android:name="android.permission.INTERNET" />
 
    <application
-        android:label="habit_tracker_moshtari"
+        android:label="Mesbah"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
