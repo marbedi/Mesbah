@@ -203,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage>
                           itemCount: 2,
                         ),
                         Center(
-                          child: Text("شما عادت آرشیو شده‌ای ندارید",
+                          child: Text("شما عادت انجام شده‌ای ندارید",
                               style: context.textTheme.headlineSmall!),
                         ),
                       ],

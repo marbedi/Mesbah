@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:habit_tracker_moshtari/common/extensions/context.dart';
+import 'package:habit_tracker_moshtari/common/extensions/string.dart';
 import 'package:habit_tracker_moshtari/common/gen/assets.gen.dart';
 import 'package:like_button/like_button.dart';
 
@@ -61,9 +62,41 @@ class OnlineHabitItem extends StatelessWidget {
                 horizontal: 16.0,
                 vertical: 3.0,
               ),
-              child: Text("۳ ساعت پیش - امتیاز کامل - ۴۰ امتیاز",
-                  style: context.textTheme.labelMedium!.copyWith(
-                      color: Colors.black, fontWeight: FontWeight.normal)),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time,
+                        color: Colors.grey[400],
+                        size: 15,
+                      ),
+                      Text(
+                        "۳ ساعت پیش",
+                        style: context.textTheme.labelMedium!
+                            .copyWith(fontSize: 11, color: Colors.grey[400]),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: Colors.grey[400],
+                        size: 15,
+                      ),
+                      Text(
+                        " ${habit.score..toString().toFarsiNumber()} امتیاز",
+                        style: context.textTheme.labelMedium!
+                            .copyWith(fontSize: 11, color: Colors.grey[400]),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
           ButtonBar(
