@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:habit_tracker_moshtari/common/exceptions/exceptions.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/usecases/complete_habit_use_case.dart';
+import 'package:mesbah/common/exceptions/exceptions.dart';
+import 'package:mesbah/features/habit/domain/entities/habit_entity.dart';
+import 'package:mesbah/features/habit/domain/usecases/complete_habit_use_case.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../../../../common/usecases/usecase.dart';

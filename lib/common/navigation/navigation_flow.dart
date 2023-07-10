@@ -1,5 +1,5 @@
-import 'package:habit_tracker_moshtari/features/habit/domain/entities/category_entity.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
+import 'package:mesbah/features/habit/domain/entities/category_entity.dart';
+import 'package:mesbah/features/habit/domain/entities/habit_entity.dart';
 
 import '../../features/auth/domain/entities/user_entity.dart';
 import '../../router/router.dart';

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:habit_tracker_moshtari/common/exceptions/exceptions.dart';
-import 'package:habit_tracker_moshtari/common/extensions/future.dart';
-import 'package:habit_tracker_moshtari/common/usecases/usecase.dart';
-import 'package:habit_tracker_moshtari/features/auth/domain/usecases/get_user_data_use_case.dart';
+import 'package:mesbah/common/exceptions/exceptions.dart';
+import 'package:mesbah/common/extensions/future.dart';
+import 'package:mesbah/common/usecases/usecase.dart';
+import 'package:mesbah/features/auth/domain/usecases/get_user_data_use_case.dart';
 
 import '../../data/data_source/auth_remote_data_source.dart';
 import '../../domain/entities/user_entity.dart';

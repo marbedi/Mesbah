@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:habit_tracker_moshtari/common/exceptions/exceptions.dart';
+import 'package:mesbah/common/exceptions/exceptions.dart';
 
 import '../../../../common/usecases/usecase.dart';
 import '../entities/user_entity.dart';

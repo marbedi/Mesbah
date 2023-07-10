@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:habit_tracker_moshtari/common/extensions/context.dart';
-import 'package:habit_tracker_moshtari/common/extensions/string.dart';
-import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/entities/habit_entity.dart';
+import 'package:mesbah/common/extensions/context.dart';
+import 'package:mesbah/common/extensions/string.dart';
+import 'package:mesbah/common/navigation/navigation_flow.dart';
+import 'package:mesbah/features/habit/domain/entities/habit_entity.dart';
 
 class HabitItem extends StatelessWidget {
   const HabitItem({super.key, required this.index, required this.habit});

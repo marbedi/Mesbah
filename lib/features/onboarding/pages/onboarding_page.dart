@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart' as t;
 import 'package:flutter/material.dart';
-import 'package:habit_tracker_moshtari/common/extensions/context.dart';
-import 'package:habit_tracker_moshtari/common/gen/assets.gen.dart';
-import 'package:habit_tracker_moshtari/common/navigation/navigation_flow.dart';
+import 'package:mesbah/common/extensions/context.dart';
+import 'package:mesbah/common/gen/assets.gen.dart';
+import 'package:mesbah/common/navigation/navigation_flow.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

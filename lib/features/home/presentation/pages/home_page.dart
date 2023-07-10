@@ -1,11 +1,11 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:habit_tracker_moshtari/common/extensions/context.dart';
-import 'package:habit_tracker_moshtari/features/habit/presentation/bloc/habit_bloc_bloc.dart';
-import 'package:habit_tracker_moshtari/features/habit/presentation/pages/category_list_page.dart';
-import 'package:habit_tracker_moshtari/features/habit/presentation/pages/online_habits_list_page.dart';
-import 'package:habit_tracker_moshtari/features/auth/presentation/pages/profile_page.dart';
+import 'package:mesbah/common/extensions/context.dart';
+import 'package:mesbah/features/habit/presentation/bloc/habit_bloc_bloc.dart';
+import 'package:mesbah/features/habit/presentation/pages/category_list_page.dart';
+import 'package:mesbah/features/habit/presentation/pages/online_habits_list_page.dart';
+import 'package:mesbah/features/auth/presentation/pages/profile_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../locator.dart';

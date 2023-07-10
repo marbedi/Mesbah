@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:habit_tracker_moshtari/common/usecases/usecase.dart';
-import 'package:habit_tracker_moshtari/features/auth/domain/usecases/get_user_data_use_case.dart';
-import 'package:habit_tracker_moshtari/features/auth/domain/usecases/sign_in_with_email_use_case.dart';
+import 'package:mesbah/common/usecases/usecase.dart';
+import 'package:mesbah/features/auth/domain/usecases/get_user_data_use_case.dart';
+import 'package:mesbah/features/auth/domain/usecases/sign_in_with_email_use_case.dart';
 
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/sign_up_with_email_use_case.dart';

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:habit_tracker_moshtari/common/extensions/date.dart';
-import 'package:habit_tracker_moshtari/features/habit/domain/entities/reminder.dart';
+import 'package:mesbah/common/extensions/date.dart';
+import 'package:mesbah/features/habit/domain/entities/reminder.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'habit_entity.g.dart';
