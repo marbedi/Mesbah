@@ -7,6 +7,7 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../../domain/entities/my_habits_search_filter.dart';
 import '../../domain/usecases/get_all_habits_use_case.dart';
+import 'online_habits_state.dart';
 
 part 'habit_bloc_event.dart';
 part 'habit_bloc_state.dart';
@@ -18,7 +19,8 @@ class HabitBloc extends Bloc<HabitBlocEvent, HabitBlocState> {
       {required this.getHabitByDateUseCase, required this.getAllHabitsUseCase})
       : super(HabitBlocState(
             todoListStates: TodoListInitial(),
-            myHabitListStates: MyHabitListInitial())) {
+            myHabitListStates: MyHabitListInitial(),
+            onlineHabitsStates: OnlineHabitsInitial())) {
     on<GetTodoListEvent>((event, emit) async {
       emit(state.copyWith(todoListStates: TodoListLoading()));
       final result = await getHabitByDateUseCase(event.date);
@@ -32,10 +34,27 @@ class HabitBloc extends Bloc<HabitBlocEvent, HabitBlocState> {
       emit(state.copyWith(myHabitListStates: MyHabitListLoading()));
       final result = await getAllHabitsUseCase(event.filter);
       result.fold(
-          (l) => emit(state.copyWith(
-              myHabitListStates: MyHabitListFailure(message: l.message))),
-          (r) => emit(state.copyWith(
-              myHabitListStates: MyHabitListSuccess(habits: r))));
+        (l) => emit(state.copyWith(
+            myHabitListStates: MyHabitListFailure(message: l.message))),
+        (r) => emit(
+          state.copyWith(
+            myHabitListStates: MyHabitListSuccess(habits: r),
+          ),
+        ),
+      );
+    });
+    on<GetAllOnlineHabitsEvent>((event, emit) async {
+      emit(state.copyWith(myHabitListStates: MyHabitListLoading()));
+      // final result = await getAllHabitsUseCase();
+      // result.fold(
+      //   (l) => emit(state.copyWith(
+      //       myHabitListStates: MyHabitListFailure(message: l.message))),
+      //   (r) => emit(
+      //     state.copyWith(
+      //       myHabitListStates: MyHabitListSuccess(habits: r),
+      //     ),
+      //   ),
+      // );
     });
   }
 }

@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:habit_tracker_moshtari/common/usecases/usecase.dart';
 
+import 'package:habit_tracker_moshtari/common/usecases/usecase.dart';
+import 'package:habit_tracker_moshtari/features/auth/domain/usecases/get_user_data_use_case.dart';
 import 'package:habit_tracker_moshtari/features/auth/domain/usecases/sign_in_with_email_use_case.dart';
 
 import '../../domain/entities/user_entity.dart';
@@ -13,14 +14,16 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   final SignInWithEmailUseCase? signInWithEmailUseCase;
   final SignUpWithEmailUseCase? signUpWithEmailUseCase;
+  final GetUserDataUseCase? getUserDataUseCase;
 
   AuthBloc({
     this.signInWithEmailUseCase,
     this.signUpWithEmailUseCase,
-  }) : super(AuthBlocState(status: AuthStatus.unknown)) {
+    this.getUserDataUseCase,
+  }) : super(AuthBlocState()) {
     on<SignInRequestedEvent>(
       (event, emit) async {
-        emit(state.copyWith(status: AuthStatus.loading));
+        emit(state.copyWith(status: () => AuthStatus.loading));
 
         final result = await signInWithEmailUseCase!(
             SignInWithEmailUseCaseParams(
@@ -29,19 +32,19 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         result.fold(
             (l) => emit(
                   state.copyWith(
-                    status: AuthStatus.error,
-                    error: l.toString(),
+                    status: () => AuthStatus.failure,
+                    error: () => l.toString(),
                   ),
                 ),
             (r) => emit(state.copyWith(
-                  status: AuthStatus.authenticated,
-                  userEntity: r,
+                  status: () => AuthStatus.success,
+                  userEntity: () => r,
                 )));
       },
     );
     on<SignUpRequestedEvent>(
       (event, emit) async {
-        emit(state.copyWith(status: AuthStatus.loading));
+        emit(state.copyWith(status: () => AuthStatus.loading));
 
         final result = await signUpWithEmailUseCase!(
             SignUpWithEmailUseCaseParams(
@@ -53,13 +56,33 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         result.fold(
             (l) => emit(
                   state.copyWith(
-                    status: AuthStatus.error,
-                    error: l.toString(),
+                    status: () => AuthStatus.failure,
+                    error: () => l.toString(),
                   ),
                 ),
             (r) => emit(state.copyWith(
-                  status: AuthStatus.authenticated,
-                  userEntity: r,
+                  status: () => AuthStatus.success,
+                  userEntity: () => r,
+                )));
+      },
+    );
+    on<GetUserDataEvent>(
+      (event, emit) async {
+        emit(state.copyWith(status: () => AuthStatus.loading));
+
+        final result =
+            await getUserDataUseCase!(GetUserDataUseCaseParams(id: event.id));
+
+        result.fold(
+            (l) => emit(
+                  state.copyWith(
+                    status: () => AuthStatus.failure,
+                    error: () => l.toString(),
+                  ),
+                ),
+            (r) => emit(state.copyWith(
+                  status: () => AuthStatus.success,
+                  userEntity: () => r,
                 )));
       },
     );

@@ -18,7 +18,7 @@ class HabitItem extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            index.toString().toFarsiNumber(),
+            (index + 1).toString().toFarsiNumber(),
             style: context.textTheme.labelMedium,
           ),
           const SizedBox(

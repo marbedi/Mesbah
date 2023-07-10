@@ -16,3 +16,5 @@ class GetMyHabitsListEvent extends HabitBlocEvent {
   final MyHabitsSearchFilterEntity filter;
   const GetMyHabitsListEvent({required this.filter});
 }
+
+class GetAllOnlineHabitsEvent extends HabitBlocEvent {}
